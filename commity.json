@@ -1,0 +1,20 @@
+{
+  "commitsParts": [
+    {
+      "scope": {
+        "label": "Choose the commit scope",
+        "type": "select",
+        "selectOptions": [
+          "spec",
+          "feat",
+          "fix"
+        ]
+      }
+    },
+    {
+      "message": {
+        "label": "Choose the commit message"
+      }
+    }
+  ]
+}
