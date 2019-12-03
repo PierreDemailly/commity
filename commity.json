@@ -16,5 +16,6 @@
         "label": "Choose the commit message"
       }
     }
-  ]
+  ],
+  "render": "$+scope: $+message"
 }
