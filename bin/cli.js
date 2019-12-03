@@ -44,7 +44,6 @@ program
  * example of use: commity -p --addAll
  */
 program
-  .allowUnknownOption()
   .option('-p, --push', 'push changes to current remote branch after commiting')
   .option('-a, --addAll', 'add all staged changes before commiting')
 
