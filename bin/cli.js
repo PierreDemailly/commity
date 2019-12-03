@@ -8,7 +8,6 @@ const program = require('commander');
 // internal libs
 const init    = require('../lib/init');
 const commity = require('../lib/commity');
-const utils    = require('../lib/utils');
 
 /**
  * Define if there is commity.json in cwd.
