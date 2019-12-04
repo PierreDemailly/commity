@@ -1,6 +1,4 @@
-# Commity
-
-[![Greenkeeper badge](https://badges.greenkeeper.io/PierreDemailly/commity.svg)](https://greenkeeper.io/)
+# Commity [![Build status](https://travis-ci.org/PierreDemailly/commity.svg?branch=develop)](https://travis-ci.org/PierreDemailly/commity) [![Greenkeeper status](https://badges.greenkeeper.io/PierreDemailly/commity.svg)](https://greenkeeper.io/)
 
 **Commity** is a command line tool that will prompt you each **commits parts** required in your commit message.
 You can configure Commity easily so the entire team follow the commit format You need.
