@@ -56,5 +56,4 @@ if (initialized) {
   commity(program);
 }
 
-// TODO: commity --addAll --push => git add --all && commity && git push
 // TODO: commity -A -P           => git add --all && commity && git push
