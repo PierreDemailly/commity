@@ -2,6 +2,12 @@
   "name": "@pierred/commity",
   "version": "1.2.0",
   "description": "Customize your workspace commits messages easily",
+  "keywords": [
+    "git",
+    "commit",
+    "command line tool",
+    "prettier"
+  ],
   "main": "./bin/cli.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -19,5 +25,8 @@
   },
   "bin": {
     "commity": "./bin/cli.js"
+  },
+  "bugs": {
+    "url": "https://github.com/PierreDemailly/commity/issues"
   }
 }
