@@ -49,8 +49,11 @@ As You may see in `commity.json`, there are 2 parts you can configure: `commitsP
 
 Your commitsParts take a `part's key`, in the example above there are two `part's key` : scope and message.
 If you want your `part` to be a simple input, juste give it a `label`
+
 <img src="https://i.ibb.co/br60mqX/Capture-d-e-cran-2019-12-03-a-19-26-43.png" width="50%" height="50%">
+
 If you want your `part's name` to be a select, You need to passe `"type": "select"` and `"selectOptions": ["array", "of", "options"]`
+
 <img src="https://i.ibb.co/LgY9dR8/Capture-d-e-cran-2019-12-03-a-19-29-57.png" width="50%" height="50%">
 
 I'm working to make the config with CLI instead of with a json file.
