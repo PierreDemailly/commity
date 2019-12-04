@@ -1,6 +1,6 @@
 {
   "name": "@pierred/commity",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Customize your workspace commits messages easily",
   "main": "./bin/cli.js",
   "scripts": {
