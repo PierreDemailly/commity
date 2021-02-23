@@ -1,7 +1,7 @@
 {
   "name": "@pierred/commity",
   "version": "1.2.1",
-  "description": "Customize your workspace commits messages easily",
+  "description": "Setup rules to get conventional commit messages for your projects",
   "keywords": [
     "git",
     "commit",
