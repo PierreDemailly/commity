@@ -1,7 +1,7 @@
 {
   "name": "@pierred/commity",
   "version": "1.2.1",
-  "description": "Setup rules to get conventional commit messages for your projects",
+  "description": "Use conventional commit messages in your projects",
   "keywords": [
     "git",
     "commit",
