@@ -31,5 +31,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/PierreDemailly/commity"
-  }
+  },
+  "homepage": "https://github.com/PierreDemailly/commity#readme"
 }
