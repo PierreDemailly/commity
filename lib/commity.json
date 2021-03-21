@@ -1,0 +1,39 @@
+{
+  "fields": [
+    {
+      "scope": {
+        "label": "Select the type of change that you're committing",
+        "type": "select",
+        "selectOptions": [
+          {
+            "value": "feat",
+            "description": "A new feature"
+          },
+          {
+            "value": "fix",
+            "description": "A bug fix"
+          },
+          {
+            "value": "docs",
+            "description": "Documentation only changes"
+          },
+          {
+            "value": "refactor",
+            "description": "Changes that neither fixes a bug or adds a feature"
+          }
+        ]
+      }
+    },
+    {
+      "message": {
+        "label": "Choose the commit message"
+      }
+    },
+    {
+      "ticket": {
+        "label": "What is the issue id"
+      }
+    }
+  ],
+  "render": "$+scope #$+ticket: $+message"
+}
