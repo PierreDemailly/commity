@@ -2,7 +2,7 @@
 
 // external libs
 const chalk   = require('chalk');
-const fs      = require('file-system');
+const fs      = require('fs');
 const program = require('commander');
 
 // internal libs
@@ -19,11 +19,13 @@ let initialized = true;
 /**
  * Check if current directory is a Git repository
  */
-const isGitInit = fs.existsSync(process.cwd() + '/.git')
-if (!isGitInit) {
-  console.log(chalk.red('Current directory is not a Git repository.'));
-  process.exit();
-}
+const path = process.cwd() + '/.git';
+fs.access(path, fs.F_OK, (err) => {
+  if (err) {
+    console.log(chalk.red('Current directory is not a Git repository.'));
+    process.exit();
+  }
+});
 
 /**
  * CLI (sub)commands
