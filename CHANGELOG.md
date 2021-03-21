@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+# 1.2.2
+
++ Package cleaned up
++ Remove unused dependencies
++ Fix vulnerabilities
+
 # 1.2.1
 
 ## Added
