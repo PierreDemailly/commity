@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+# 1.2.3
+
++ remove child_process dependency
+
 # 1.2.2
 
 + Package cleaned up
