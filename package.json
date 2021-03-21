@@ -15,9 +15,9 @@
   "author": "pierred",
   "license": "ISC",
   "dependencies": {
-    "chalk": "^4.0.0",
     "inquirer": "^7.3.3",
-    "promise-fs": "^2.1.1"
+    "promise-fs": "^2.1.1",
+    "tricolors": "1.3.0"
   },
   "bin": {
     "commity": "./bin/cli.js"

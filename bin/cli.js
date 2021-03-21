@@ -1,11 +1,8 @@
 #!/usr/bin/env node
 
-// external libs
-const chalk = require('chalk');
 const fs = require('fs');
-const program = require('commander');
+const tricolors = require('tricolors');
 
-// internal libs
 const init = require('../lib/init');
 const commity = require('../lib/commity');
 
@@ -22,7 +19,7 @@ let initialized = true;
 const path = process.cwd() + '/.git';
 fs.access(path, fs.F_OK, (err) => {
   if (err) {
-    console.log(chalk.red('Current directory is not a Git repository.'));
+    tricolors.redLog('Current directory is not a Git repository.');
     process.exit();
   }
 });
