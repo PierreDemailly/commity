@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
 // external libs
-const chalk   = require('chalk');
-const fs      = require('fs');
+const chalk = require('chalk');
+const fs = require('fs');
 const program = require('commander');
 
 // internal libs
-const init    = require('../lib/init');
+const init = require('../lib/init');
 const commity = require('../lib/commity');
 
 /**
@@ -42,19 +42,12 @@ program
 
 /**
  * CLI available options
- *
- * example of use: commity -p --addAll
  */
 program
   .option('-p, --push', 'push changes to current remote branch after commiting')
-  .option('-a, --addAll', 'add all staged changes before commiting')
-
-/**
- * Parse program arguments
- */
+  .option('-a, --addAll', 'add all staged changes before commiting');
 program.parse(process.argv);
 
 if (initialized) {
   commity(program);
 }
-
