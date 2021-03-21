@@ -49,7 +49,7 @@ As You may see in `commity.json`, there are 2 parts you can configure: `commitsP
   ],
   "render": "$+scope: $+message" // $+scope will be replaced with selected option (spec / feat / fix)
 }
-```comm
+```
 
 Your commitsParts take a `part's key`, in the example above there are two `part's key` : scope and message.
 If you want your `part` to be a simple input, juste give it a `label`
