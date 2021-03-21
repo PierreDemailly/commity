@@ -12,7 +12,7 @@ const commity = require('../lib/commity');
 /**
  * Define if there is commity.json in cwd.
  * If user run "commity init"
- * then this variable will be set falsy so commity will not run.
+ * then this variable will be set falsy so commity will not run. 
  */
 let initialized = true;
 
