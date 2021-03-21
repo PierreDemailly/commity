@@ -2,9 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+# 1.2.4
+
++ Init commity from an existing file. Starter config is more elegant.
+
 # 1.2.3
 
-+ remove child_process dependency
++ Remove child_process dependency
 
 # 1.2.2
 
