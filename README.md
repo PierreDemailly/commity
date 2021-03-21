@@ -12,13 +12,17 @@ Installation is as simple as :
 
     npm i -g @pierred/commity
 
-## Initialization
-When You have Commity installed, You need to run this simple (sub)command:
+## Usage
 
-    commity init
-It will create a `commity.json` file at the root of your application so You are ready to use Commity:
+| Command | Description |
+| -- | -- |
+| `commity` | Execute commity <br> *<sub>:bulb: project need to be commity friendly, see below</sub>* |
+| `commity init` | Make your repo commity friendly creating a commity.json file |
 
-    commity
+| Option | Alias | Description |
+| -- | -- | -- |
+| `--addAll` | `-a` | Add all changes to the index (`git add --all`) before commit |
+| `--push` | `-p` | Push after commit <br> *<sub>:bulb: if cannot push e.g. because your branch has no upstream branch, commity will be able to commit anyway</sub>* |
 
 ## Configuration
 As You may see in `commity.json`, there are 2 parts you can configure: `commitsParts` and `render`
@@ -45,7 +49,7 @@ As You may see in `commity.json`, there are 2 parts you can configure: `commitsP
   ],
   "render": "$+scope: $+message" // $+scope will be replaced with selected option (spec / feat / fix)
 }
-```
+```comm
 
 Your commitsParts take a `part's key`, in the example above there are two `part's key` : scope and message.
 If you want your `part` to be a simple input, juste give it a `label`
