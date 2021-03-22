@@ -1,14 +1,12 @@
 # Commity [![Build status](https://travis-ci.org/PierreDemailly/commity.svg?branch=develop)](https://travis-ci.org/PierreDemailly/commity)
 
-**Commity** is a command line tool that will prompt you each **commits parts** required in your commit message.
-You can configure Commity easily so the entire team follow the commit format You need.
+**Commity** is a command line tool that will help you with commits conventions.
+You can configure Commity fast & easily so every collaborators can follow the commit convention you need.
 
-## Motivation
-
-The goal is to create a powerfull tool that handle commits and some git options so all the collaborators in a same project can follow a specific commit format. The tool must make your git commits cleaner and sometimes, give them more sense.
 
 ## Installation
-Installation is as simple as :
+
+I highly recommand to use it globally.
 
     npm i -g @pierred/commity
 
@@ -25,41 +23,56 @@ Installation is as simple as :
 | `--push` | `-p` | Push after commit <br> *<sub>:bulb: if cannot push e.g. because your branch has no upstream branch, commity will be able to commit anyway</sub>* |
 
 ## Configuration
-As You may see in `commity.json`, there are 2 parts you can configure: `commitsParts` and `render`
+As You may see in `commity.json`, there are 2 parts you can configure: `fields` and `render`
 
 ```js
 {
-  "commitsParts": [
+  "fields": [
     {
-      "scope": { // this is a part's key
-        "label": "Choose the commit scope",
+      "scope": {
+        "label": "Select the type of change that you're committing",
         "type": "select",
         "selectOptions": [
-          "spec",
-          "feat",
-          "fix"
+          {
+            "value": "feat",
+            "description": "A new feature"
+          },
+          {
+            "value": "fix",
+            "description": "A bug fix"
+          },
+          {
+            "value": "docs",
+            "description": "Documentation only changes"
+          },
+          {
+            "value": "refactor",
+            "description": "Changes that neither fixes a bug or adds a feature"
+          }
         ]
       }
     },
     {
-      "message": { // this is a parts's key
-        "label": "Choose the commit message" // for simple inputs, don't need type
+      "message": {
+        "label": "Choose the commit message"
+      }
+    },
+    {
+      "ticket": {
+        "label": "What is the issue id"
       }
     }
   ],
-  "render": "$+scope: $+message" // $+scope will be replaced with selected option (spec / feat / fix)
+  "render": "$+scope #$+ticket: $+message"
 }
 ```
 
-Your commitsParts take a `part's key`, in the example above there are two `part's key` : scope and message.
-If you want your `part` to be a simple input, juste give it a `label`
+Your fields take a `field's key`, in the above example there are two `field's key` : *scope*, *message* and *ticket*.
 
-<img src="https://i.ibb.co/br60mqX/Capture-d-e-cran-2019-12-03-a-19-26-43.png" width="50%" height="50%">
+You can choose 2 types of field:
+- simple input where you just need a `label`
+- select input where you have to add `"type": "select"` and provide `selectOptions`
 
-If you want your `part's name` to be a select, You need to passe `"type": "select"` and `"selectOptions": ["array", "of", "options"]`
+`render` take the formatted string, replacing `$+<commit field's key>` with the user input.
 
-<img src="https://i.ibb.co/LgY9dR8/Capture-d-e-cran-2019-12-03-a-19-29-57.png" width="50%" height="50%">
-
-I'm working to make the config with CLI instead of with a json file.
-
-Of course, there is no limit of `commit part`.
+<img src="https://i.ibb.co/J3QSBhc/commity.png" width="50%" height="50%" alt="usage screenshot">
