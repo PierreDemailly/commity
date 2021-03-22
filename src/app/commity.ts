@@ -31,7 +31,7 @@ export class Commity {
         process.exit();
       }
     } catch (e) {
-      tricolors.redLog('Error while count changes, cannot commit.', e);
+      tricolors.redLog('Error while count changes, cannot commit. ' + e,);
       process.exit();
     }
 
@@ -86,10 +86,10 @@ export class Commity {
      * Try to commit
      */
     try {
-      await utils.gitCommit(commitMsg);
+      await Helper.gitCommit(commitMsg);
     } catch (e) {
       tricolors.redLog(e);
-      process.emit();
+      process.exit();
     }
 
     /**
@@ -97,7 +97,7 @@ export class Commity {
      */
     if (nezparser.hasOption('push', 'p')) {
       try {
-        await utils.gitpush();
+        await Helper.gitPush();
         finalMsg += '\r\n' + nezbold.bold('Pushed commited changes');
       } catch (e) {
         tricolors.redLog(e);

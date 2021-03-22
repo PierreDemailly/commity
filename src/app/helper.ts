@@ -61,7 +61,7 @@ export class Helper {
     })
   }
 
-  static getStagedCount() {
+  static getStagedCount(): Promise<any> {
     return new Promise((resolve, reject) => {
       exec('git diff --cached --numstat | wc -l', (err, stdout, stderr) => {
         if (err) {

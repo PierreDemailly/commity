@@ -6,7 +6,7 @@ import { Commity } from './commity';
 
 class App {
   initialized = true;
-  conf: 
+  conf: any;
 
   constructor() {
     this.initialize();
@@ -74,7 +74,7 @@ class App {
           ],
         },
       ],
-    });
+    }),
     nezparser.parse();
   }
 }
