@@ -23,9 +23,9 @@
   "dependencies": {
     "inquirer": "^7.3.3",
     "nezbold": "^1.2.0",
-    "nezparser": "^1.5.0",
+    "nezparser": "^1.7.1",
     "promise-fs": "^2.1.1",
-    "tricolors": "^1.5.0"
+    "tricolors": "^1.5.4"
   },
   "bin": {
     "commity": "./bin/cli.js"
@@ -37,5 +37,11 @@
     "type": "git",
     "url": "https://github.com/PierreDemailly/commity"
   },
-  "homepage": "https://github.com/PierreDemailly/commity#readme"
+  "homepage": "https://github.com/PierreDemailly/commity#readme",
+  "devDependencies": {
+    "@types/inquirer": "^7.3.1",
+    "@types/node": "^14.14.35",
+    "@types/promise-fs": "^2.1.1",
+    "typescript": "^4.2.3"
+  }
 }
