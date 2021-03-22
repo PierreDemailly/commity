@@ -16,8 +16,9 @@
   "license": "ISC",
   "dependencies": {
     "inquirer": "^7.3.3",
+    "nezparser": "^1.5.0",
     "promise-fs": "^2.1.1",
-    "tricolors": "1.3.0"
+    "tricolors": "^1.5.0"
   },
   "bin": {
     "commity": "./bin/cli.js"
