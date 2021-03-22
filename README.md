@@ -75,4 +75,4 @@ You can choose 2 types of field:
 
 `render` take the formatted string, replacing `$+<commit field's key>` with the user input.
 
-<img src="https://i.ibb.co/J3QSBhc/commity.png" width="50%" height="50%" alt="usage screenshot">
+<img src="https://i.ibb.co/J3QSBhc/commity.png" width="90%" height="90%" alt="usage screenshot">
