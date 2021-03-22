@@ -48,23 +48,7 @@ nezparser.setup({
         {
           name: '--overwrite',
           alias: '-o',
-          description: 'overwrite existing config (if exist)',
-        },
-        {
-          name: '--addAll',
-          alias: '-a',
-          description: 'add all staged changes before commiting',
-        },
-      ],
-    },
-    {
-      name: 'setup',
-      description: 'inititialize Commity',
-      options: [
-        {
-          name: '--config',
-          alias: '-c',
-          description: 'config changes to current remote branch after commiting',
+          description: 'overwrite existing commity.json (if exists)',
         },
       ],
     },
