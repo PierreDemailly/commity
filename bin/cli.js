@@ -1,9 +1,11 @@
 #!/usr/bin/env node
+/* eslint-disable prefer-destructuring */
 
 const fs = require('fs');
 const tricolors = require('tricolors');
+const nezparser = require('nezparser');
 
-const init = require('../lib/init');
+const { init } = require('../lib/init');
 const commity = require('../lib/commity');
 
 /**
@@ -16,7 +18,7 @@ let initialized = true;
 /**
  * Check if current directory is a Git repository
  */
-const path = process.cwd() + '/.git';
+const path = `${process.cwd()}/.git`;
 fs.access(path, fs.F_OK, (err) => {
   if (err) {
     tricolors.redLog('Current directory is not a Git repository.');
@@ -24,27 +26,57 @@ fs.access(path, fs.F_OK, (err) => {
   }
 });
 
-/**
- * CLI (sub)commands
- *
- * example of use: commity init
- */
-program
-  .command('init')
-  .description('init your workspace to make it commity friendly')
-  .action(() => {
-    initialized = false;
-    init();
-  })
+nezparser.setup({
+  usage: 'commity <command> <options>',
+  options: [
+    {
+      name: '--push',
+      alias: '-p',
+      description: 'push changes to current remote branch after commiting',
+    },
+    {
+      name: '--addAll',
+      alias: '-a',
+      description: 'add all staged changes before commiting',
+    },
+  ],
+  commands: [
+    {
+      name: 'init',
+      description: 'inititialize Commity',
+      options: [
+        {
+          name: '--overwrite',
+          alias: '-o',
+          description: 'overwrite existing config (if exist)',
+        },
+        {
+          name: '--addAll',
+          alias: '-a',
+          description: 'add all staged changes before commiting',
+        },
+      ],
+    },
+    {
+      name: 'setup',
+      description: 'inititialize Commity',
+      options: [
+        {
+          name: '--config',
+          alias: '-c',
+          description: 'config changes to current remote branch after commiting',
+        },
+      ],
+    },
+  ],
+});
+nezparser.parse();
 
-/**
- * CLI available options
- */
-program
-  .option('-p, --push', 'push changes to current remote branch after commiting')
-  .option('-a, --addAll', 'add all staged changes before commiting');
-program.parse(process.argv);
+nezparser.on('init').so(() => {
+  initialized = false;
+  init();
+});
 
 if (initialized) {
-  commity(program);
+  commity(nezparser);
 }
