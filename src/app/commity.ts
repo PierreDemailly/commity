@@ -4,7 +4,7 @@ import { Helper } from './helper'
 import { Inezparser, SetupOptions } from 'nezparser';
 
 export class Commity {
-  static run(nezparser: Inezparser) {
+  static async run(nezparser: Inezparser) {
     let finalMsg = '';
     let stagedCount: number;
     let changesCount: number;
@@ -108,5 +108,3 @@ export class Commity {
     process.exit();
   }
 } 
-  
-}
