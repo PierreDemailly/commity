@@ -1,18 +1,24 @@
 {
   "name": "@pierred/commity",
-  "version": "1.2.4",
-  "description": "Use conventional commit messages in your projects",
+  "version": "1.2.5",
+  "description": "Setup commits convention fast & simple.",
   "keywords": [
-    "git",
+    "workflow",
+    "commits",
+    "commitizen",
+    "commit-conventions",
     "commit",
-    "command line tool",
-    "prettier"
+    "command-line-tool",
+    "commit-message",
+    "conventional-commits",
+    "commity",
+    "workflow-tool"
   ],
   "main": "./bin/cli.js",
   "scripts": {
     "start": "node ./bin/cli.js"
   },
-  "author": "pierred",
+  "author": "PierreDemailly",
   "license": "ISC",
   "dependencies": {
     "inquirer": "^7.3.3",
