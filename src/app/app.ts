@@ -21,7 +21,7 @@ class App {
       this.initialized = false;
       Init.initialize();
     });
-    
+
     if (this.initialized) {
       Commity.run(nezparser as Inezparser);
     }
@@ -38,7 +38,7 @@ class App {
 
   isGitInitialized(): void {
     const path = `${process.cwd()}/.git`;
-    fs.access(path, fs.F_OK, (err) => {
+    fs.access(path, fs.constants.F_OK, (err) => {
       if (err) {
         tricolors.redLog('Current directory is not a Git repository.');
         process.exit();
@@ -74,7 +74,9 @@ class App {
           ],
         },
       ],
-    }),
+    });
     nezparser.parse();
   }
 }
+
+new App();

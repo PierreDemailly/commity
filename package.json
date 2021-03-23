@@ -16,14 +16,15 @@
   ],
   "main": "./bin/cli.js",
   "scripts": {
-    "start": "node ./bin/cli.js"
+    "start": "node ./dist/app/app.js",
+    "build": "tsc"
   },
   "author": "PierreDemailly",
   "license": "ISC",
   "dependencies": {
     "inquirer": "^7.3.3",
-    "nezbold": "^1.2.0",
-    "nezparser": "^1.7.1",
+    "nezbold": "^1.2.1",
+    "nezparser": "^1.7.3",
     "promise-fs": "^2.1.1",
     "tricolors": "^1.5.4"
   },

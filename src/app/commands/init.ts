@@ -7,7 +7,7 @@ import commity from '../../commity.json';
 export class Init {
   static initialize(): void {
     const path = `${process.cwd()}/commity.json`;
-    fs.access(path, fs.F_OK, async (err) => {
+    fs.access(path, fs.constants.F_OK, async (err) => {
       if (!err) {
         const res = await inquirer.prompt({
           name: 'overwrite',
