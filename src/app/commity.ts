@@ -3,12 +3,16 @@ import nezbold from 'nezbold';
 import { Helper } from './helper'
 import { Inezparser, SetupOptions } from 'nezparser';
 
+interface Conf extends SetupOptions {
+  render: string;
+}
+
 export class Commity {
-  static async run(nezparser: Inezparser) {
+  static async run(nezparser: Inezparser): Promise<void> {
     let finalMsg = '';
     let stagedCount: number;
     let changesCount: number;
-    let conf: any;
+    let conf: Conf;
 
     /**
      * Check that commity.json file exist in current working directory

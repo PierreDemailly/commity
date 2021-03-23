@@ -1,12 +1,12 @@
 import tricolors from 'tricolors';
 import fs from 'fs';
-import nezparser, { Inezparser } from 'nezparser';
+import nezparser, { Inezparser, SetupOptions } from 'nezparser';
 import { Init } from './commands/init';
 import { Commity } from './commity';
 
 class App {
   initialized = true;
-  conf: any;
+  conf: SetupOptions | undefined;
 
   constructor() {
     this.initialize();
