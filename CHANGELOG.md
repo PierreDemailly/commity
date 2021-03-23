@@ -2,15 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
-# 1.2.4
+# 1.3.0
 
-+ Init commity from an existing file. Starter config is more elegant.
++ Migrate to typescript
 
-# 1.2.3
-
-+ Remove child_process dependency
-
-# 1.2.2
+# 1.2.2 -> 1.2.6
 
 + Package cleaned up
 + Remove unused dependencies
