@@ -1,6 +1,6 @@
 import { exec } from 'child_process';
 
-export const gitStagedCount = (): Promise<any> => {
+export const gitStagedCount = (): Promise<number> => {
   return new Promise((resolve, reject) => {
     exec('git diff --cached --numstat | wc -l', (err, stdout, stderr) => {
       if (err) {

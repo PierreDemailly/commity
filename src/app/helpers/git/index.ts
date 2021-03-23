@@ -1,6 +1,6 @@
 import { gitPush } from './push';
 import { gitAddAll } from './addAll';
 import { gitStagedCount } from './stagedCount';
-import { gitStatus } from './status';
+import { gitChangesCount } from './changesCount';
 
-export { gitStatus, gitStagedCount, gitAddAll, gitPush }
+export { gitChangesCount, gitStagedCount, gitAddAll, gitPush }

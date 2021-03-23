@@ -1,5 +1,15 @@
 import inquirer from 'inquirer';
 
+interface FieldValue {
+  [string: string]: string | object;
+  [number: number]: string | object;
+}
+
+interface Fields {
+  fieldsNames: string[];
+  values: FieldValue;
+}
+
 export const fields = (): Promise<any> => {
   return new Promise(async (resolve, reject) => {
     const conf = require(process.cwd() + '/commity.json');
@@ -23,7 +33,7 @@ export const fields = (): Promise<any> => {
       inquirerPrompts.push(prompt);
     }
 
-    const results: any = { fieldsNames, values: {} };
+    const results: Fields = { fieldsNames, values: {} };
 
     for (let i = 0; i < inquirerPrompts.length; i++) {
       try {

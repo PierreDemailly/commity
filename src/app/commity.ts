@@ -1,11 +1,12 @@
+import { gitCommit } from './helpers/git/commit';
+import { gitChangesCount } from './helpers/git/changesCount';
 import { gitAddAll } from './helpers/git/addAll';
 import { gitStagedCount } from './helpers/git/stagedCount';
 import { fields } from './helpers/core/fields';
 import tricolors from 'tricolors';
 import nezbold from 'nezbold';
-import { Helper } from './helper'
 import { Inezparser, SetupOptions } from 'nezparser';
-import { gitPush, gitStatus } from './helpers/git';
+import { gitPush } from './helpers/git';
 
 interface Conf extends SetupOptions {
   render: string;
@@ -32,8 +33,7 @@ export class Commity {
      * Check there are changes to commit
      */
     try {
-      const status = await gitStatus();
-      changesCount = status.split('\n').length - 1;
+      changesCount = await gitChangesCount();
       if (changesCount < 1) {
         tricolors.redLog('No changes detected, cannot commit.');
         process.exit();
@@ -94,7 +94,7 @@ export class Commity {
      * Try to commit
      */
     try {
-      await Helper.gitCommit(commitMsg);
+      await gitCommit(commitMsg);
     } catch (e) {
       tricolors.redLog(e);
       process.exit();
