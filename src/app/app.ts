@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import tricolors from 'tricolors';
 import fs from 'fs';
 import nezparser, { Inezparser, SetupOptions } from 'nezparser';
