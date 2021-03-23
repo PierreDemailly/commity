@@ -1,7 +1,11 @@
+import { gitAddAll } from './helpers/git/addAll';
+import { gitStagedCount } from './helpers/git/stagedCount';
+import { fields } from './helpers/core/fields';
 import tricolors from 'tricolors';
 import nezbold from 'nezbold';
 import { Helper } from './helper'
 import { Inezparser, SetupOptions } from 'nezparser';
+import { gitPush, gitStatus } from './helpers/git';
 
 interface Conf extends SetupOptions {
   render: string;
@@ -28,7 +32,7 @@ export class Commity {
      * Check there are changes to commit
      */
     try {
-      const status = await Helper.getGitStatus();
+      const status = await gitStatus();
       changesCount = status.split('\n').length - 1;
       if (changesCount < 1) {
         tricolors.redLog('No changes detected, cannot commit.');
@@ -43,7 +47,7 @@ export class Commity {
      * Get number of staged files
      */
     try {
-      stagedCount = await Helper.getStagedCount();
+      stagedCount = await gitStagedCount();
       if (stagedCount === 0 && !nezparser.hasOption('addAll', 'a')) {
         tricolors.redLog('Are you sure there are staged changes to commit ?');
         process.exit();
@@ -58,7 +62,7 @@ export class Commity {
      */
     if (nezparser.hasOption('addAll', 'a') && (changesCount - stagedCount) > 0) {
       try {
-        await Helper.gitAddAll();
+        await gitAddAll();
         tricolors.greenLog('Added ' + (changesCount - stagedCount) + ' files to staged changed \r\n');
         stagedCount += changesCount - stagedCount;
       } catch (e) {
@@ -71,7 +75,7 @@ export class Commity {
      */
     let result;
     try {
-      result = await Helper.getFields();
+      result = await fields();
     } catch (e) {
       tricolors.redLog(e);
       process.exit();
@@ -101,7 +105,7 @@ export class Commity {
      */
     if (nezparser.hasOption('push', 'p')) {
       try {
-        await Helper.gitPush();
+        await gitPush();
         finalMsg += '\r\n' + nezbold.bold('Pushed commited changes');
       } catch (e) {
         tricolors.redLog(e);

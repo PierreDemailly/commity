@@ -1,0 +1,15 @@
+import { exec } from 'child_process';
+
+export const gitPush = (): Promise<any> => {
+  return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
+      exec('git push', (err, stdout, stderr) => {
+        if (err) {
+          reject('Could not push. ' + err);
+        } else {
+          resolve(Number(stdout.trim()));
+        }
+      });
+    });
+  });
+}
