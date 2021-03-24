@@ -20,9 +20,9 @@ I highly recommand to use it globally.
 
 ## Get started
 
-+ npm i -g @pierred/commity
-+ commity init
-+ commity
++ `npm i -g @pierred/commity`
++ `commity init`
++ `commity`
 
 ## Usage
 
