@@ -1,38 +1,49 @@
 import inquirer from 'inquirer';
 import fs from 'fs';
-import fsp from 'promise-fs';
 import tricolors from 'tricolors';
 import commity from '../../commity.json';
+import { join } from 'path';
 
 export class Init {
-  static initialize(): void {
-    const path = `${process.cwd()}/commity.json`;
-    fs.access(path, fs.constants.F_OK, async (err) => {
-      if (!err) {
-        const res = await inquirer.prompt({
-          name: 'overwrite',
-          type: 'confirm',
-          message: 'file commity.json already exists, overwrite ?',
-        });
-        if (res.overwrite) {
-          fsp.writeFile(`${process.cwd()}/commity.json`, JSON.stringify(commity, null, 2)).then(() => {
-            tricolors.greenLog(`Updated ${process.cwd()}/commity.json`);
-            process.exit();
-          }).catch((e) => {
-            tricolors.redLog(e);
-            process.exit();
-          });
-        } else {
-          process.exit();
-        }
+  static async initialize(): Promise<void> {
+    const path = join(process.cwd(), '/commity.json');
+
+    try {
+      // await fs.promises.access(path, fs.constants.F_OK);
+      const commityJson = await fs.promises.open(path, 'a');
+      const stat = await commityJson.stat();
+
+      if (stat.blocks === 0) {
+        await commityJson.appendFile(JSON.stringify(commity, null, 2));
+        await commityJson.close();
+        
+        tricolors.greenLog(`Created ${path}`);
+        process.exit();
       }
-      fsp.writeFile(`${process.cwd()}/commity.json`, JSON.stringify(commity, null, 2)).then(() => {
-        tricolors.greenLog(`Created ${process.cwd()}/commity.json`);
-        process.exit();
-      }).catch((e) => {
-        tricolors.redLog(e);
-        process.exit();
+
+      const res = await inquirer.prompt({
+        name: 'overwrite',
+        type: 'confirm',
+        message: 'file commity.json already exists, overwrite ?',
       });
-    });
+
+      if (!res.overwrite) {
+        await commityJson.close();
+        tricolors.blueLog(`${path} already exists and has not been updated.`);
+        process.exit();
+      }
+      await fs.promises.rm(path);
+      await commityJson.close();
+
+      const newCommityJson = await fs.promises.open(path, 'a');
+
+      await newCommityJson.appendFile(JSON.stringify(commity, null, 2));
+      await newCommityJson.close();
+
+      tricolors.greenLog(`Updated ${path}`);
+      process.exit();
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 }

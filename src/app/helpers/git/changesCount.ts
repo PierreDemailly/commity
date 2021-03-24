@@ -2,11 +2,11 @@ import { exec } from 'child_process';
 
 export const gitChangesCount = (): Promise<number> => {
   return new Promise((resolve, reject) => {
-    exec('git diff --cached --numstat | wc -l', (err, stdout, stderr) => {
-      if (err) {
-        reject('Error git diff. ' + err);
+    exec('git status -s', (err, stdout, stderr) => {
+      if (err || stderr) {
+        resolve(0);
       } else {
-        resolve(stdout.trim().split('\n').length - 1);
+        resolve(stdout.split('\n').length - 1);
       }
     });
   });
