@@ -16,13 +16,14 @@ class App {
 
   initialize(): void {
     this.isGitInitialized();
-    this.isCommityFriendly();
     this.setupParser();
 
     nezparser.on('init').so(() => {
       this.initialized = false;
       Init.initialize();
     });
+
+    this.isCommityFriendly();
 
     if (this.initialized) {
       Commity.run(nezparser as Inezparser);
