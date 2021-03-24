@@ -23,9 +23,8 @@ class App {
       Init.initialize();
     });
 
-    this.isCommityFriendly();
-
     if (this.initialized) {
+      this.isCommityFriendly();
       Commity.run(nezparser as Inezparser);
     }
   }
