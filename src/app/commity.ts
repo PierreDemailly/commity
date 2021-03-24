@@ -7,6 +7,7 @@ import tricolors from 'tricolors';
 import nezbold from 'nezbold';
 import { Inezparser, SetupOptions } from 'nezparser';
 import { gitPush } from './helpers/git';
+import { join } from 'path';
 
 interface Conf extends SetupOptions {
   render: string;
@@ -23,7 +24,7 @@ export class Commity {
      * Check that commity.json file exist in current working directory
      */
     try {
-      conf = require(process.cwd() + '/commity.json');
+      conf = await import(join(process.cwd(), 'commity.json'));
     } catch (error) {
       tricolors.redLog('Commity is not initialized. Please run "commity init" to init your workspace.');
       process.exit();

@@ -12,10 +12,14 @@ I highly recommand to use it globally.
 
 ## Usage
 
+Commands:
+
 | Command | Description |
 | -- | -- |
 | `commity` | Execute commity <br> *<sub>:bulb: project need to be commity friendly, see below</sub>* |
 | `commity init` | Make your repo commity friendly creating a commity.json file |
+
+Options:
 
 | Option | Alias | Description |
 | -- | -- | -- |

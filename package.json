@@ -1,6 +1,6 @@
 {
   "name": "@pierred/commity",
-  "version": "1.3.2",
+  "version": "1.3.4",
   "description": "Setup commits convention fast & simple.",
   "keywords": [
     "workflow",
@@ -26,7 +26,6 @@
     "inquirer": "^7.3.3",
     "nezbold": "^1.2.1",
     "nezparser": "^1.7.3",
-    "promise-fs": "^2.1.1",
     "tricolors": "^1.5.4"
   },
   "bin": {
