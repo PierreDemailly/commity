@@ -12,15 +12,14 @@ class App {
   conf: SetupOptions | undefined;
 
   constructor() {
-    this.initialize();
   }
 
   async initialize(): Promise<void> {
     try {
       await this.isGitInitialized();
-      await this.setupParser();
-      
-      nezparser.on('init').so(() => {
+      this.setupParser();
+
+      nezparser.on('init').so(async () => {
         this.initialized = false;
         Init.initialize();
       });
@@ -30,7 +29,7 @@ class App {
         Commity.run(nezparser as Inezparser);
       }
     } catch (error) {
-      throw new Error(error);
+      process.exit();
     }
   }
 
@@ -49,11 +48,12 @@ class App {
       await fs.promises.access(path, fs.constants.F_OK);
       return;
     } catch (error) {
-      throw new Error(error);
+      tricolors.redLog('Current directory is not a Git repository.');
+      process.exit();
     }
   }
 
-  async setupParser(): Promise<void> {
+  setupParser(): void {
     nezparser.setup({
       usage: 'commity <command> <options>',
       options: [
@@ -86,4 +86,7 @@ class App {
   }
 }
 
-new App();
+(async () => {
+  const app = new App();
+  await app.initialize();
+})();
