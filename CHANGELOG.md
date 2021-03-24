@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+# 1.4.0
+
++ Make commity working on multiple os
+
 # 1.3.0
 
 + Migrate to typescript
