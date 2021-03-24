@@ -1,4 +1,5 @@
-# Commity
+# [Commity](http://commity.online/#/)
+
 
 [![Build status](https://travis-ci.org/PierreDemailly/commity.svg?branch=develop)](https://travis-ci.org/PierreDemailly/commity)
 
@@ -19,9 +20,9 @@ I highly recommand to use it globally.
 
 ## Get started
 
-+ npm i -g @pierred/commity
-+ commity init
-+ commity
++ `npm i -g @pierred/commity`
++ `commity init`
++ `commity`
 
 ## Usage
 
