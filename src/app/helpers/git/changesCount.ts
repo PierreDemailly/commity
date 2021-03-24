@@ -5,7 +5,6 @@ export const gitChangesCount = (): Promise<number> => {
     return new Promise((resolve, reject) => {
       exec('git status -s', (err, stdout, stderr) => {
         console.log(process.env);
-
         if (err) {
           resolve(0);
         } else {
