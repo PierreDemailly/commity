@@ -20,7 +20,7 @@ export class Commity {
     let changesCount: number;
     let conf: Conf;
 
-    
+
     /**
      * Check that commity.json file exist in current working directory
      */
@@ -39,6 +39,7 @@ export class Commity {
       if (changesCount < 1) {
         tricolors.redLog('No changes detected, cannot commit.');
         process.exit();
+        
       }
     } catch (e) {
       tricolors.redLog('Error while count changes, cannot commit. ' + e,);
