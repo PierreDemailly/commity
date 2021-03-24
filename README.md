@@ -1,4 +1,5 @@
-# Commity
+# [Commity](http://commity.online/#/)
+
 
 [![Build status](https://travis-ci.org/PierreDemailly/commity.svg?branch=develop)](https://travis-ci.org/PierreDemailly/commity)
 
