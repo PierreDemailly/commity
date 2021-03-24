@@ -20,6 +20,7 @@ export class Commity {
     let changesCount: number;
     let conf: Conf;
 
+    
     /**
      * Check that commity.json file exist in current working directory
      */
