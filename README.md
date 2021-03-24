@@ -3,6 +3,9 @@
 **Commity** is a command line tool that will help you with commits conventions.
 You can configure Commity fast & easily so every collaborators can follow the commit convention you need.
 
+## Requirement
+
+node >= 14.16.0
 
 ## Installation
 
