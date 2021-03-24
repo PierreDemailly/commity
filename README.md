@@ -1,7 +1,11 @@
-# Commity [![Build status](https://travis-ci.org/PierreDemailly/commity.svg?branch=develop)](https://travis-ci.org/PierreDemailly/commity)
+# Commity
+
+[![Build status](https://travis-ci.org/PierreDemailly/commity.svg?branch=develop)](https://travis-ci.org/PierreDemailly/commity)
 
 **Commity** is a command line tool that will help you with commits conventions.
 You can configure Commity fast & easily so every collaborators can follow the commit convention you need.
+
+<img src="./commity.gif" width="681" alt="usage screenshot">
 
 ## Requirement
 
@@ -12,6 +16,12 @@ node >= 14.16.0
 I highly recommand to use it globally.
 
     npm i -g @pierred/commity
+
+## Get started
+
++ npm i -g @pierred/commity
++ commity init
++ commity
 
 ## Usage
 
@@ -82,4 +92,4 @@ You can choose 2 types of field:
 
 `render` take the formatted string, replacing `$+<commit field's key>` with the user input.
 
-<img src="https://i.ibb.co/J3QSBhc/commity.png" width="90%" height="90%" alt="usage screenshot">
+**More features incoming :tada:**
