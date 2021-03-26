@@ -15,21 +15,17 @@ export class App {
   }
 
   async initialize(): Promise<void> {
-    try {
-      await this.isGitInitialized();
-      this.setupParser();
+    await this.isGitInitialized();
+    this.setupParser();
 
-      nezparser.on('init').so(async () => {
-        this.initialized = false;
-        Init.initialize();
-      });
+    nezparser.on('init').so(async () => {
+      this.initialized = false;
+      Init.initialize();
+    });
 
-      if (this.initialized) {
-        await this.isCommityFriendly();
-        Commity.run(nezparser as Inezparser);
-      }
-    } catch (error) {
-      process.exit();
+    if (this.initialized) {
+      await this.isCommityFriendly();
+      Commity.run(nezparser as Inezparser);
     }
   }
 
