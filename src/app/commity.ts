@@ -45,10 +45,23 @@ export class Commity {
     }
 
     /**
+     * Handle options --addAll, -a
+     */
+    stagedCount = await gitStagedCount();
+     if (nezparser.hasOption('addAll', 'a') && (changesCount - stagedCount) > 0) {
+      try {
+        await gitAddAll();
+        tricolors.greenLog('Added ' + (changesCount - stagedCount) + ' files to staged changed \r\n');
+        stagedCount += changesCount - stagedCount;
+      } catch (e) {
+        tricolors.redLog(e);
+      }
+    }
+
+    /**
      * Get number of staged files
      */
     try {
-      stagedCount = await gitStagedCount();
       if (stagedCount === 0 && !nezparser.hasOption('addAll', 'a')) {
         tricolors.redLog('Are you sure there are staged changes to commit ?');
         process.exit();
@@ -58,18 +71,6 @@ export class Commity {
       process.exit();
     }
 
-    /**
-     * Handle options --addAll, -a
-     */
-    if (nezparser.hasOption('addAll', 'a') && (changesCount - stagedCount) > 0) {
-      try {
-        await gitAddAll();
-        tricolors.greenLog('Added ' + (changesCount - stagedCount) + ' files to staged changed \r\n');
-        stagedCount += changesCount - stagedCount;
-      } catch (e) {
-        tricolors.redLog(e);
-      }
-    }
 
     /**
      * commitParts() will prompt to user all the needed parts of the commit
