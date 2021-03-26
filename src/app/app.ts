@@ -7,7 +7,7 @@ import { Init } from './commands/init';
 import { Commity } from './commity';
 import { join } from 'path';
 
-class App {
+export class App {
   initialized = true;
   conf: SetupOptions | undefined;
 
@@ -85,8 +85,3 @@ class App {
     nezparser.parse();
   }
 }
-
-(async () => {
-  const app = new App();
-  await app.initialize();
-})();
