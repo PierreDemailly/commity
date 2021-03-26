@@ -8,29 +8,22 @@ import { Commity } from './commity';
 import { join } from 'path';
 
 class App {
-  initialized = true;
   conf: SetupOptions | undefined;
 
   constructor() {
   }
 
   async initialize(): Promise<void> {
-    try {
-      await this.isGitInitialized();
-      this.setupParser();
+    await this.isGitInitialized();
+    this.setupParser();
 
-      nezparser.on('init').so(async () => {
-        this.initialized = false;
-        Init.initialize();
-      });
-
-      if (this.initialized) {
-        await this.isCommityFriendly();
-        Commity.run(nezparser as Inezparser);
-      }
-    } catch (error) {
-      process.exit();
+    if (nezparser.commandUsed('init')) {
+      Init.initialize();
+      return;
     }
+
+    await this.isCommityFriendly();
+    Commity.run(nezparser as Inezparser);
   }
 
   async isCommityFriendly(): Promise<void> {
