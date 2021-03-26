@@ -5,7 +5,7 @@ interface FieldValue {
   [number: number]: string | object;
 }
 
-interface Fields {
+export interface Fields {
   fieldsNames: string[];
   values: FieldValue;
 }

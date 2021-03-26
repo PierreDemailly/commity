@@ -1,5 +1,9 @@
 #!/usr/bin/env node
 
+export interface Conf extends SetupOptions {
+  render: string;
+}
+
 import tricolors from 'tricolors';
 import fs from 'fs';
 import nezparser, { Inezparser, SetupOptions } from 'nezparser';
@@ -8,7 +12,7 @@ import { Commity } from './commity';
 import { join } from 'path';
 
 export class App {
-  conf: SetupOptions | undefined;
+  conf: Conf | undefined;
 
   constructor() {
   }
@@ -23,7 +27,8 @@ export class App {
     }
 
     await this.isCommityFriendly();
-    Commity.run(nezparser as Inezparser);
+    const commity = new Commity(nezparser as Inezparser, this.conf as Conf);
+    await commity.run();
   }
 
   async isCommityFriendly(): Promise<void> {
