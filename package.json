@@ -20,7 +20,8 @@
     "start": "node ./dist/main.js",
     "prebuild": "rimraf dist",
     "build": "tsc",
-    "test": "npx jest --coverage"
+    "test": "npx jest",
+    "test:dev": "npx jest --coverage --verbose true"
   },
   "author": "PierreDemailly",
   "license": "ISC",
