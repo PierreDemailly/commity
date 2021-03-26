@@ -87,7 +87,7 @@ export class Commity {
     const hasOwn = Object.prototype.hasOwnProperty;
     const commitMsg = render.replace(
       /\$\+(\w+)/gui,
-      (whole: any, key: PropertyKey) => hasOwn.call(values, key) ? values[key] : whole,
+      (whole: any, key: string) => hasOwn.call(values, key) ? values[key] : whole,
     );
 
     finalMsg += tricolors.green('Commited ' + stagedCount + ' files. ') + nezbold.bold(commitMsg);
@@ -116,4 +116,4 @@ export class Commity {
     console.log(finalMsg);
     process.exit();
   }
-} 
+}

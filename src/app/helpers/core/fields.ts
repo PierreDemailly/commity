@@ -10,7 +10,7 @@ interface Fields {
   values: FieldValue;
 }
 
-export const fields = (): Promise<any> => {
+export const fields = (): Promise<Fields> => {
   return new Promise(async (resolve, reject) => {
     const conf = require(process.cwd() + '/commity.json');
     const inquirerPrompts = [];
