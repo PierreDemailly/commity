@@ -11,6 +11,8 @@ import { Init } from './commands/init';
 import { Commity } from './commity';
 import { join } from 'path';
 
+const logger = require('pino')()
+
 export class App {
   conf: Conf | undefined;
 
@@ -27,6 +29,7 @@ export class App {
     }
 
     await this.isCommityFriendly();
+    
     const commity = new Commity(nezparser as Inezparser, this.conf as Conf);
     await commity.run();
   }

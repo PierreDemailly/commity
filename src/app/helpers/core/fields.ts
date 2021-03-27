@@ -12,11 +12,14 @@ export interface Fields {
 
 export const fields = (): Promise<Fields> => {
   return new Promise(async (resolve, reject) => {
+    console.log('wtffffffffff');
+    console.log('********************************************');
     const conf = require(process.cwd() + '/commity.json');
     const inquirerPrompts = [];
     const fields = conf.fields;
     const fieldsNames = [];
-
+    console.log('wtffffffffff');
+    console.log('********************************************');
     for (const field in fields) {
       const fieldName = Object.keys(fields[field]).join();
       fieldsNames.push(fieldName);

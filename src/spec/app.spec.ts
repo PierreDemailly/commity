@@ -6,6 +6,7 @@ jest.mock("fs", () => ({
     F_OK: 0,
   }
 }));
+jest.mock("./../app/commity");
 
 import path from 'path';
 import { join } from 'path';
@@ -13,7 +14,6 @@ import fs from 'fs';
 import tricolors from 'tricolors';
 
 import { Init } from './../app/commands/init';
-import { Commity } from './../app/commity';
 import { App } from './../app/app';
 
 describe('App', () => {
@@ -25,12 +25,9 @@ describe('App', () => {
 
   it('should initialize', async () => {
     const spy = jest.spyOn(app, 'isGitInitialized').mockReturnValue(Promise.resolve());
-    const spyB = jest.spyOn(Commity, 'run').mockReturnValue(Promise.resolve());
     await app.initialize();
     expect(spy).toHaveBeenCalled();
-    expect(spyB).toHaveBeenCalled();
     spy.mockRestore();
-    spyB.mockRestore();
   });
 
   it('should run Init.initialize()', async () => {

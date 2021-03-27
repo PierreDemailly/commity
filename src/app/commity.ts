@@ -30,7 +30,6 @@ export class Commity {
     await this.checkStagedCount();
     await this.getFields();
 
-
     const render = this.conf.render;
     const values = this.result.values;
     const hasOwn = Object.prototype.hasOwnProperty;
