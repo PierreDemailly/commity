@@ -55,7 +55,7 @@ export class Commity {
         process.exit();
       }
     } catch (e) {
-      tricolors.redLog('Error while count changes, cannot commit. ' + e,);
+      tricolors.redLog('Error while count changes, cannot commit. ' + e);
       process.exit();
     }
   }
@@ -65,7 +65,7 @@ export class Commity {
     if (this.nezparser.hasOption('addAll', 'a') && (this.changesCount - this.stagedCount) > 0) {
       try {
         await gitAddAll();
-        tricolors.greenLog('Added ' + (this.changesCount - this.stagedCount) + ' files to staged changed \r\n');
+        tricolors.greenLog('Added ' + (this.changesCount - this.stagedCount) + ' files to staged changes \r\n');
         this.stagedCount += this.changesCount - this.stagedCount;
       } catch (e) {
         tricolors.redLog(e);
@@ -73,14 +73,9 @@ export class Commity {
     }
   }
 
-  async checkStagedCount(): Promise<void> {
-    try {
-      if (this.stagedCount === 0 && !this.nezparser.hasOption('addAll', 'a')) {
-        tricolors.redLog('Are you sure there are staged changes to commit ?');
-        process.exit();
-      }
-    } catch (e) {
-      tricolors.redLog(e);
+  checkStagedCount(): void {
+    if (this.stagedCount === 0 && !this.nezparser.hasOption('addAll', 'a')) {
+      tricolors.redLog('Are you sure there are staged changes to commit ?');
       process.exit();
     }
   }
