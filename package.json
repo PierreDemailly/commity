@@ -21,7 +21,7 @@
     "prebuild": "rimraf dist",
     "build": "tsc",
     "test": "npx jest",
-    "test:dev": "npx jest --coverage --verbose true"
+    "test:dev": "node_modules/.bin/jest --coverage --verbose true"
   },
   "author": "PierreDemailly",
   "license": "ISC",
