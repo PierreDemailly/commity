@@ -1,11 +1,11 @@
 
-jest.mock("fs", () => ({
+jest.mock('fs', () => ({
   access: jest.fn().mockResolvedValue(Promise.resolve()),
   constants: {
     F_OK: 0,
-  }
+  },
 }));
-jest.mock("./../app/commity");
+jest.mock('./../app/commity');
 jest.mock('./../app/commands/init', () => ({
   InitCommandHandler: jest.fn().mockReturnValue({
     run: jest.fn().mockResolvedValue(true),
@@ -19,22 +19,17 @@ jest.mock('nezparser', () => ({
 
 import nezparser from 'nezparser';
 
-import path from 'path';
-import { join } from 'path';
-import fs from 'fs';
-import tricolors from 'tricolors';
-
-import { App } from './../app/app';
+import {App} from './../app/app';
 
 describe('App', () => {
   beforeAll(() => {
     spyOn(process, 'exit').and.callFake(() => { });
   });
 
-  let app = new App();
+  const app = new App();
 
-  it('should be defined', () => { 
-      expect(app).toBeTruthy();
+  it('should be defined', () => {
+    expect(app).toBeTruthy();
   });
 
   it('should initialize', async () => {
@@ -53,5 +48,5 @@ describe('App', () => {
     spyOn(app, 'isCommityFriendly');
     await app.initialize();
     expect(app.isCommityFriendly).not.toHaveBeenCalled();
-  })
-})
+  });
+});

@@ -1,14 +1,13 @@
-import { gitCommit } from './helpers/git/commit';
-import { gitChangesCount } from './helpers/git/changesCount';
-import { gitAddAll } from './helpers/git/addAll';
-import { gitStagedCount } from './helpers/git/stagedCount';
-import { Fields, fields } from './helpers/core/fields';
+import {gitCommit} from './helpers/git/commit';
+import {gitChangesCount} from './helpers/git/changesCount';
+import {gitAddAll} from './helpers/git/addAll';
+import {gitStagedCount} from './helpers/git/stagedCount';
+import {Fields, fields} from './helpers/core/fields';
 import tricolors from 'tricolors';
 import nezbold from 'nezbold';
-import { Inezparser, SetupOptions } from 'nezparser';
-import { gitPush } from './helpers/git';
-import { join } from 'path';
-import { Conf } from './app';
+import {Inezparser} from 'nezparser';
+import {gitPush} from './helpers/git';
+import {Conf} from './app';
 
 export class Commity {
   nezparser: Inezparser;
@@ -34,13 +33,13 @@ export class Commity {
     const values = this.result.values;
     const hasOwn = Object.prototype.hasOwnProperty;
     const commitMsg = render.replace(
-      /\$\+(\w+)/gui,
-      (whole: any, key: string) => hasOwn.call(values, key) ? values[key] : whole,
+        /\$\+(\w+)/gui,
+        (whole: any, key: string) => hasOwn.call(values, key) ? values[key] : whole,
     );
 
     this.finalMsg += tricolors.green('Commited ' + this.stagedCount + ' files. ') + nezbold.bold(commitMsg);
 
-    await this.commit(this.finalMsg);
+    await this.commit(commitMsg);
     await this.handlePushOption();
 
     console.log(this.finalMsg);

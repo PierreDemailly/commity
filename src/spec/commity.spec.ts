@@ -1,14 +1,14 @@
-import { Inezparser } from 'nezparser';
-import { Conf } from '../app/app';
-import { fields } from '../app/helpers/core/fields';
-import { Commity } from './../app/commity';
+import {Inezparser} from 'nezparser';
+import {Conf} from '../app/app';
+import {fields} from '../app/helpers/core/fields';
+import {Commity} from './../app/commity';
 import nezbold from 'nezbold';
 import tricolors from 'tricolors';
-import { gitChangesCount } from '../app/helpers/git/changesCount';
-import { gitStagedCount } from '../app/helpers/git/stagedCount';
-import { gitAddAll } from '../app/helpers/git/addAll';
-import { gitCommit } from '../app/helpers/git/commit';
-import { gitPush } from '../app/helpers/git/push';
+import {gitChangesCount} from '../app/helpers/git/changesCount';
+import {gitStagedCount} from '../app/helpers/git/stagedCount';
+import {gitAddAll} from '../app/helpers/git/addAll';
+import {gitCommit} from '../app/helpers/git/commit';
+import {gitPush} from '../app/helpers/git/push';
 
 jest.mock('tricolors', () => ({
   redLog: jest.fn().mockReturnValue(true),
@@ -23,23 +23,23 @@ jest.mock('../app/helpers/core/fields', () => ({
     fieldsNames: ['foo'],
   })),
 }));
-jest.mock("../app/helpers/git/commit", () => ({
+jest.mock('../app/helpers/git/commit', () => ({
   gitCommit: jest.fn().mockResolvedValue(Promise.resolve()),
 }));
-jest.mock("../app/helpers/git/push", () => ({
+jest.mock('../app/helpers/git/push', () => ({
   gitPush: jest.fn().mockResolvedValue(Promise.resolve()),
 }));
-jest.mock("../app/helpers/git/stagedCount", () => ({
+jest.mock('../app/helpers/git/stagedCount', () => ({
   gitStagedCount: jest.fn().mockResolvedValue(Promise.resolve(0)),
 }));
-jest.mock("../app/helpers/git/changesCount", () => ({
+jest.mock('../app/helpers/git/changesCount', () => ({
   gitChangesCount: jest.fn().mockResolvedValue(Promise.resolve(748)),
 }));
-jest.mock("../app/helpers/git/addAll", () => ({
+jest.mock('../app/helpers/git/addAll', () => ({
   gitAddAll: jest.fn().mockResolvedValue(Promise.resolve()),
 }));
 describe('Commity', () => {
-  const commity = new Commity({ hasOption: (opt: string, alias: string) => true } as Inezparser, {} as Conf);
+  const commity = new Commity({hasOption: (opt: string, alias: string) => true} as Inezparser, {} as Conf);
 
   it('should be defined', () => {
     expect(commity).toBeTruthy();
@@ -79,7 +79,7 @@ describe('Commity', () => {
   });
 
   it('check changes count should throw', async () => {
-    (gitChangesCount as any).mockResolvedValue(Promise.reject('Fake Error'));
+    (gitChangesCount as any).mockResolvedValue(Promise.reject(new Error('Fake Error')));
     spyOn(tricolors, 'redLog').and.callFake(() => {});
     spyOn(process, 'exit').and.callFake(() => {});
     commity.checkChangesCount().catch((e) => {
@@ -92,19 +92,19 @@ describe('Commity', () => {
     (gitStagedCount as any).mockResolvedValue(Promise.resolve(1));
     (gitAddAll as any).mockResolvedValue(Promise.resolve());
     process.argv = ['1', '1', '--addAll'];
-    commity.changesCount = 5
+    commity.changesCount = 5;
     spyOn(tricolors, 'greenLog');
     await commity.handleAddAllOption();
     expect(tricolors.greenLog).toHaveBeenCalledWith('Added 4 files to staged changes \r\n');
   });
 
   it('handle add all option should throw', () => {
-    (gitAddAll as any).mockResolvedValue(Promise.reject('fake error'));
+    (gitAddAll as any).mockResolvedValue(Promise.reject(new Error('fake error')));
     spyOn(tricolors, 'redLog');
     commity.handleAddAllOption().catch((e) => {
       expect(e).toEqual('fake error');
       expect(tricolors.redLog).toHaveBeenCalledOnceWith(e);
-    })
+    });
   });
 
   it('should check staged count', async () => {
@@ -128,13 +128,13 @@ describe('Commity', () => {
   });
 
   it('get fields should throw', () => {
-    (fields as any).mockResolvedValue(Promise.reject('fake error'));
+    (fields as any).mockResolvedValue(Promise.reject(new Error('fake error')));
     spyOn(tricolors, 'redLog');
     spyOn(process, 'exit').and.callFake(() => {});
     commity.getFields().catch((e) => {
       expect(e).toEqual('fake error');
       expect(tricolors.redLog).toHaveBeenCalledWith(e);
-    })
+    });
   });
 
   it('commit should not throw', async () => {
@@ -144,7 +144,7 @@ describe('Commity', () => {
   });
 
   it('commit should throw', () => {
-    (gitCommit as any).mockResolvedValue(Promise.reject('fake error'));
+    (gitCommit as any).mockResolvedValue(Promise.reject(new Error('fake error')));
     spyOn(tricolors, 'redLog');
     spyOn(process, 'exit').and.callFake(() => {});
     commity.commit('fake').catch((e) => {
@@ -161,12 +161,12 @@ describe('Commity', () => {
   });
 
   it('handle push option should throw', () => {
-    (gitPush as any).mockResolvedValue(Promise.reject('fake error'));
+    (gitPush as any).mockResolvedValue(Promise.reject(new Error('fake error')));
     spyOn(tricolors, 'redLog');
     spyOn(process, 'exit').and.callFake(() => {});
     commity.handlePushOption().catch((e) => {
       expect(e).toEqual('fake error');
       expect(tricolors.redLog).toHaveBeenCalledWith(e);
     });
-  })
+  });
 });

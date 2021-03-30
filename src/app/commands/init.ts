@@ -30,7 +30,7 @@ export class InitCommandHandler {
         await this.createJson(path, commity);
         tricolors.greenLog(`Updated ${process.cwd()}/commity.json`);
       } catch (error) {
-        tricolors.redLog(`Could not update ${process.cwd()}/commity.json`)
+        tricolors.redLog(`Could not update ${process.cwd()}/commity.json`);
       } finally {
         process.exit();
       }
@@ -40,7 +40,7 @@ export class InitCommandHandler {
       await this.createJson(path, commity);
       tricolors.greenLog(`Created ${process.cwd()}/commity.json`);
     } catch (error) {
-      tricolors.redLog(`Could not create ${process.cwd()}/commity.json`)
+      tricolors.redLog(`Could not create ${process.cwd()}/commity.json`);
     } finally {
       process.exit();
     }
@@ -49,7 +49,7 @@ export class InitCommandHandler {
   async createJson(path: string, json: object): Promise<boolean> {
     return new Promise((resolve, reject) => {
       fs.writeFile(path, JSON.stringify(json, null, 2), (err) => {
-        resolve(!!!err)
+        resolve(!!!err);
       });
     });
   }

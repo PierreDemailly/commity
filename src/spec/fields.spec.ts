@@ -1,22 +1,22 @@
 import inquirer from 'inquirer';
-import { fields } from './../app/helpers/core/fields';
+import {fields} from './../app/helpers/core/fields';
 
 jest.mock(process.cwd() + '/commity.json', () => ({
   fields: [
     {
-      "message": {
-        "label": "Choose the commit message"
-      }
+      'message': {
+        'label': 'Choose the commit message',
+      },
     },
     {
-      "ticket": {
-        "label": "What is the issue id"
-      }
+      'ticket': {
+        'label': 'What is the issue id',
+      },
     },
   ],
 }));
 jest.mock('inquirer', () => ({
-  prompt: jest.fn().mockResolvedValue(Promise.resolve({ message: 'foo', ticket: 'bar' })),
+  prompt: jest.fn().mockResolvedValue(Promise.resolve({message: 'foo', ticket: 'bar'})),
 }));
 
 
@@ -39,6 +39,6 @@ describe('fields', () => {
     fields().catch((e) => {
       expect(e).toEqual(new Error('fake error'));
       expect(process.exit).toHaveBeenCalled();
-    })
+    });
   });
 });
