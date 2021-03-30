@@ -10,6 +10,11 @@ import { gitAddAll } from '../app/helpers/git/addAll';
 import { gitCommit } from '../app/helpers/git/commit';
 import { gitPush } from '../app/helpers/git/push';
 
+jest.mock('tricolors', () => ({
+  redLog: jest.fn().mockReturnValue(true),
+  greenLog: jest.fn().mockReturnValue(true),
+  green: jest.fn().mockReturnValue(true),
+}));
 jest.mock('../app/helpers/core/fields', () => ({
   fields: jest.fn().mockResolvedValue(Promise.resolve({
     values: {
@@ -106,7 +111,6 @@ describe('Commity', () => {
     process.argv = ['1', '1', '1'];
     spyOn(commity.nezparser, 'hasOption').and.callFake(() => false);
     spyOn(process, 'exit').and.callFake(() => {});
-    console.log(process.argv);
     commity.stagedCount = 0;
     spyOn(tricolors, 'redLog');
     commity.checkStagedCount();

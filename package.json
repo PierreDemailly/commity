@@ -21,14 +21,14 @@
     "prebuild": "rimraf dist",
     "build": "tsc",
     "test": "npx jest",
-    "test:dev": "node --trace-warnings node_modules/.bin/jest --coverage --verbose true"
+    "test:dev": "node_modules/.bin/jest --coverage --verbose true --runInBand"
   },
   "author": "PierreDemailly",
   "license": "ISC",
   "dependencies": {
     "inquirer": "^7.3.3",
     "nezbold": "^1.2.1",
-    "nezparser": "^1.8.3",
+    "nezparser": "^1.8.4",
     "tricolors": "^1.5.4"
   },
   "bin": {
@@ -44,9 +44,9 @@
   "homepage": "https://github.com/PierreDemailly/commity#readme",
   "devDependencies": {
     "@types/inquirer": "^7.3.1",
-    "@types/jasmine": "^3.6.8",
+    "@types/jasmine": "^3.6.9",
     "@types/jest": "^26.0.22",
-    "@types/node": "^14.14.36",
+    "@types/node": "^14.14.37",
     "@types/promise-fs": "^2.1.1",
     "chai": "^4.3.4",
     "jest": "^26.6.3",
