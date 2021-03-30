@@ -1,14 +1,20 @@
 #!/usr/bin/env node
 
+export interface Conf extends SetupOptions {
+  render: string;
+}
+
 import tricolors from 'tricolors';
 import fs from 'fs';
 import nezparser, { Inezparser, SetupOptions } from 'nezparser';
-import { Init } from './commands/init';
 import { Commity } from './commity';
 import { join } from 'path';
+import { InitCommandHandler } from './commands/init';
 
-class App {
-  conf: SetupOptions | undefined;
+const logger = require('pino')()
+
+export class App {
+  conf: Conf | undefined;
 
   constructor() {
   }
@@ -18,12 +24,26 @@ class App {
     this.setupParser();
 
     if (nezparser.commandUsed('init')) {
-      Init.initialize();
+      const initCommandHandler = new InitCommandHandler();
+
+      try {
+        await initCommandHandler.run();
+      } catch (e) {
+        throw new Error(e);
+      }
+
       return;
     }
 
     await this.isCommityFriendly();
-    Commity.run(nezparser as Inezparser);
+    
+    const commity = new Commity(nezparser as Inezparser, this.conf as Conf);
+    
+    try {
+      await commity.run();
+    } catch (e) {
+      throw new Error(e);
+    }
   }
 
   async isCommityFriendly(): Promise<void> {
@@ -78,8 +98,3 @@ class App {
     nezparser.parse();
   }
 }
-
-(async () => {
-  const app = new App();
-  await app.initialize();
-})();
