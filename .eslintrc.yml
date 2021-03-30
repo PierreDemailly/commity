@@ -10,7 +10,7 @@ parserOptions:
 plugins:
   - '@typescript-eslint'
 rules:
-  require-jsdoc: 0
+  require-jsdoc: 2
   linebreak-style: 0
   max-len: 
     - 1
