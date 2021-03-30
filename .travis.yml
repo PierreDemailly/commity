@@ -9,7 +9,7 @@ cache:
     - ./node_modules
 
 before_install:
-  - npm install -g npm@6.10.3
+  - npm install -g npm@6.14.11
 
 install:
   - npm install

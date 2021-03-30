@@ -1,6 +1,6 @@
 {
   "name": "@pierred/commity",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "Setup commits convention fast & simple.",
   "keywords": [
     "workflow",
@@ -33,17 +33,6 @@
     "nezparser": "^1.8.4",
     "tricolors": "^1.5.4"
   },
-  "bin": {
-    "commity": "./dist/app/app.js"
-  },
-  "bugs": {
-    "url": "https://github.com/PierreDemailly/commity/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/PierreDemailly/commity"
-  },
-  "homepage": "https://github.com/PierreDemailly/commity#readme",
   "devDependencies": {
     "@types/inquirer": "^7.3.1",
     "@types/jasmine": "^3.6.9",
@@ -61,6 +50,17 @@
     "ts-jest": "^26.5.4",
     "typescript": "^4.2.3"
   },
+  "bin": {
+    "commity": "./dist/app/app.js"
+  },
+  "bugs": {
+    "url": "https://github.com/PierreDemailly/commity/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PierreDemailly/commity"
+  },
+  "homepage": "https://github.com/PierreDemailly/commity#readme",
   "engines": {
     "node": ">=14.16.0"
   }
