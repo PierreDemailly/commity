@@ -27,12 +27,12 @@ export const fields = (): Promise<Fields> => {
           type: fieldObject['type'] === 'select' ? 'list' : 'input',
           message: fieldObject['label'],
           choices: fieldObject['selectOptions'] || null,
-        })
+        });
       };
       inquirerPrompts.push(prompt);
     }
 
-    const results: Fields = { fieldsNames, values: {} };
+    const results: Fields = {fieldsNames, values: {}};
 
     for (let i = 0; i < inquirerPrompts.length; i++) {
       try {
@@ -47,4 +47,4 @@ export const fields = (): Promise<Fields> => {
     }
     resolve(results);
   });
-}
+};

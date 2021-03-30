@@ -6,12 +6,10 @@ export interface Conf extends SetupOptions {
 
 import tricolors from 'tricolors';
 import fs from 'fs';
-import nezparser, { Inezparser, SetupOptions } from 'nezparser';
-import { Commity } from './commity';
-import { join } from 'path';
-import { InitCommandHandler } from './commands/init';
-
-const logger = require('pino')()
+import nezparser, {Inezparser, SetupOptions} from 'nezparser';
+import {Commity} from './commity';
+import {join} from 'path';
+import {InitCommandHandler} from './commands/init';
 
 export class App {
   conf: Conf | undefined;
@@ -36,9 +34,9 @@ export class App {
     }
 
     await this.isCommityFriendly();
-    
+
     const commity = new Commity(nezparser as Inezparser, this.conf as Conf);
-    
+
     try {
       await commity.run();
     } catch (e) {

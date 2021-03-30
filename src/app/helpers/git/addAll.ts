@@ -1,4 +1,4 @@
-import { exec } from 'child_process';
+import {exec} from 'child_process';
 
 export const gitAddAll = (): Promise<void> => {
   return new Promise((resolve, reject) => {
@@ -9,4 +9,4 @@ export const gitAddAll = (): Promise<void> => {
       resolve();
     });
   });
-}
+};

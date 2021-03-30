@@ -1,4 +1,4 @@
-import { exec } from 'child_process';
+import {exec} from 'child_process';
 
 export const gitStagedCount = (): Promise<number> => {
   return new Promise((resolve, reject) => {
