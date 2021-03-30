@@ -39,7 +39,7 @@ export class Commity {
 
     this.finalMsg += tricolors.green('Commited ' + this.stagedCount + ' files. ') + nezbold.bold(commitMsg);
 
-    await this.commit(this.finalMsg);
+    await this.commit(commitMsg);
     await this.handlePushOption();
 
     console.log(this.finalMsg);
