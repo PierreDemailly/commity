@@ -6,6 +6,8 @@ import commity from '../../commity.json';
 export class InitCommandHandler {
   commityFileExist = false;
 
+  constructor() { }
+
   async run(): Promise<void> {
     const path = `${process.cwd()}/commity.json`;
 
@@ -28,7 +30,7 @@ export class InitCommandHandler {
         await this.createJson(path, commity);
         tricolors.greenLog(`Updated ${process.cwd()}/commity.json`);
       } catch (error) {
-        tricolors.redLog(`Could not update ${process.cwd()}/commity.json`)        
+        tricolors.redLog(`Could not update ${process.cwd()}/commity.json`)
       } finally {
         process.exit();
       }
@@ -38,7 +40,7 @@ export class InitCommandHandler {
       await this.createJson(path, commity);
       tricolors.greenLog(`Created ${process.cwd()}/commity.json`);
     } catch (error) {
-      tricolors.redLog(`Could not create ${process.cwd()}/commity.json`)        
+      tricolors.redLog(`Could not create ${process.cwd()}/commity.json`)
     } finally {
       process.exit();
     }

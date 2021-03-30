@@ -1,4 +1,4 @@
-import { InitCommandHandler } from './../app/commands/init';
+
 jest.mock("fs", () => ({
   access: jest.fn().mockResolvedValue(Promise.resolve()),
   constants: {
@@ -6,6 +6,18 @@ jest.mock("fs", () => ({
   }
 }));
 jest.mock("./../app/commity");
+jest.mock('./../app/commands/init', () => ({
+  InitCommandHandler: jest.fn().mockReturnValue({
+    run: jest.fn().mockResolvedValue(true),
+  }),
+}));
+jest.mock('nezparser', () => ({
+  commandUsed: jest.fn().mockReturnValue(false),
+  setup: jest.fn(),
+  parse: jest.fn(),
+}));
+
+import nezparser from 'nezparser';
 
 import path from 'path';
 import { join } from 'path';
@@ -15,6 +27,10 @@ import tricolors from 'tricolors';
 import { App } from './../app/app';
 
 describe('App', () => {
+  beforeAll(() => {
+    spyOn(process, 'exit').and.callFake(() => { });
+  });
+
   let app = new App();
 
   it('should be defined', () => { 
@@ -25,44 +41,17 @@ describe('App', () => {
     process.argv = ['1', '1', '1'];
     spyOn(app, 'isGitInitialized').and.callFake(() => Promise.resolve());
     spyOn(app, 'setupParser');
+    spyOn(app, 'isCommityFriendly').and.callFake(() => Promise.resolve());
     await app.initialize();
     expect(app.setupParser).toHaveBeenCalled();
+    expect(app.isCommityFriendly).toHaveBeenCalled();
   });
 
-  // it('should run Init.run()', async () => {
-  //   process.argv = ['1', '1', 'init'];
-  //   jest.spyOn(app, 'isGitInitialized').mockReturnValue(Promise.resolve());
-  //   const initCommandHandler = new InitCommandHandler();
-  //   spyOn(initCommandHandler, 'run').and.callFake(() => Promise.resolve());
-  //   await app.initialize();
-  //   expect(initCommandHandler.run).toHaveBeenCalled();
-  // });
-
-  // it('should not be commity friendly', async () => {
-  //   app = new App();
-  //   process.argv = ['1', '1', '1'];
-  //   spyOn(process, 'exit').and.callFake(() => {});
-  //   spyOn(path, 'join').and.callFake(() => Promise.reject());
-  //   jest.spyOn(tricolors, 'redLog').mockReturnValue(void null);
-  //   await app.isCommityFriendly();
-  //   expect(process.exit).toHaveBeenCalled();
-  //   expect(tricolors.redLog).toHaveBeenCalledWith('Commity is not initialized. Please run "commity init" to init your workspace.');
-  // });
-
-  // it('repo should be git initialized', async () => {
-  //   app = new App();
-  //   process.argv = ['1', '1', '1'];
-  //   await app.isGitInitialized();
-  //   expect(fs.promises.access).toHaveBeenCalledWith(`${join(process.cwd(), '/.git')}`, fs.constants.F_OK);
-  // });
-
-  // it('repo should not be git initialized', async () => {
-  //   app = new App();
-  //   jest.spyOn(fs.promises, 'access').mockRejectedValue('err');
-  //   jest.spyOn(tricolors, 'redLog').mockReturnValue(void null);
-  //   spyOn(process, 'exit').and.callFake(() => {});
-  //   await app.isGitInitialized();
-  //   expect(process.exit).toHaveBeenCalled();
-  //   expect(tricolors.redLog).toHaveBeenCalledWith('Current directory is not a Git repository.');
-  // });
+  it('should have init command', async () => {
+    (nezparser.commandUsed as any).mockReturnValue(true);
+    (nezparser.setup as any).mockReturnValue(true);
+    spyOn(app, 'isCommityFriendly');
+    await app.initialize();
+    expect(app.isCommityFriendly).not.toHaveBeenCalled();
+  })
 })
