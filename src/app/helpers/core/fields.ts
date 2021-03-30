@@ -45,7 +45,6 @@ export const fields = (): Promise<Fields> => {
         process.exit();
       }
     }
-
     resolve(results);
   });
 }
