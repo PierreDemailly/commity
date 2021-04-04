@@ -22,7 +22,7 @@ export class App {
     this.setupParser();
 
     if (nezparser.commandUsed('init')) {
-      const initCommandHandler = new InitCommandHandler();
+      const initCommandHandler = new InitCommandHandler(nezparser as Inezparser);
 
       try {
         await initCommandHandler.run();
