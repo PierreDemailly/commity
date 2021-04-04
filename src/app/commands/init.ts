@@ -2,29 +2,35 @@ import inquirer from 'inquirer';
 import fs from 'fs';
 import tricolors from 'tricolors';
 import commity from '../../commity.json';
+import { Inezparser } from 'nezparser';
 
 export class InitCommandHandler {
+  nezparser: Inezparser
   commityFileExist = false;
 
-  constructor() { }
+  constructor(nezparser: Inezparser) {
+    this.nezparser = nezparser;
+  }
 
   async run(): Promise<void> {
     const path = `${process.cwd()}/commity.json`;
 
     this.commityFileExist = await this.fileExist(path);
     if (this.commityFileExist) {
-      let overwriteResult;
-      try {
-        overwriteResult = await inquirer.prompt({
-          name: 'overwrite',
-          type: 'confirm',
-          message: 'file commity.json already exists, overwrite ?',
-        });
-      } catch (error) {
-        throw new Error(error);
-      }
-      if (!overwriteResult.overwrite) {
-        return;
+      if (!this.nezparser.hasOption('overwrite', 'o')) {
+        let overwriteResult;
+        try {
+          overwriteResult = await inquirer.prompt({
+            name: 'overwrite',
+            type: 'confirm',
+            message: 'file commity.json already exists, overwrite ?',
+          });
+        } catch (error) {
+          throw new Error(error);
+        }
+        if (!overwriteResult.overwrite) {
+          return;
+        }
       }
       try {
         await this.createJson(path, commity);
