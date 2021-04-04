@@ -1,6 +1,6 @@
 import {InitCommandHandler} from './../app/commands/init';
 import inquirer from 'inquirer';
-import nezparser, { Inezparser } from 'nezparser';
+import nezparser, {Inezparser} from 'nezparser';
 
 jest.mock('fs', () => ({
   access: jest.fn((path: string, mode: number, err) => err(null)),
@@ -42,7 +42,7 @@ describe('InitCommandHandler', () => {
     spyOn(initCommandHandler, 'fileExist').and.callFake(() => Promise.resolve(true));
     (inquirer as any).prompt.mockRejectedValue('fake error');
     initCommandHandler.run().catch((e) => {
-      expect(e).toEqual(new Error('fake error'));
+      expect(e).toEqual('fake error');
     });
   });
 
