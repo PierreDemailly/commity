@@ -1,5 +1,6 @@
 import {InitCommandHandler} from './../app/commands/init';
 import inquirer from 'inquirer';
+import nezparser, {Inezparser} from 'nezparser';
 
 jest.mock('fs', () => ({
   access: jest.fn((path: string, mode: number, err) => err(null)),
@@ -18,9 +19,14 @@ jest.mock('tricolors', () => ({
 }));
 
 import tricolors from 'tricolors';
-
+nezparser.setup({
+  usage: 'fake',
+  options: [],
+  commands: [],
+});
+nezparser.parse();
 describe('InitCommandHandler', () => {
-  const initCommandHandler = new InitCommandHandler();
+  const initCommandHandler = new InitCommandHandler(nezparser as Inezparser);
 
   it('should run', async () => {
     spyOn(initCommandHandler, 'fileExist').and.callFake(() => Promise.resolve(true));
@@ -36,7 +42,7 @@ describe('InitCommandHandler', () => {
     spyOn(initCommandHandler, 'fileExist').and.callFake(() => Promise.resolve(true));
     (inquirer as any).prompt.mockRejectedValue('fake error');
     initCommandHandler.run().catch((e) => {
-      expect(e).toEqual(new Error('fake error'));
+      expect(e).toEqual('fake error');
     });
   });
 
