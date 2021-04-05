@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+# 1.6.3
+
++ add --overwrite, -o option
+
 # 1.6.0
 
 + add unit tests, improve package, dev tools
