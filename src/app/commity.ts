@@ -1,120 +1,110 @@
-import { gitCommit } from './helpers/git/commit';
-import { gitChangesCount } from './helpers/git/changesCount';
-import { gitAddAll } from './helpers/git/addAll';
-import { gitStagedCount } from './helpers/git/stagedCount';
-import { fields } from './helpers/core/fields';
+import {gitCommit} from './helpers/git/commit';
+import {gitChangesCount} from './helpers/git/changesCount';
+import {gitAddAll} from './helpers/git/addAll';
+import {gitStagedCount} from './helpers/git/stagedCount';
+import {Fields, fields} from './helpers/core/fields';
 import tricolors from 'tricolors';
 import nezbold from 'nezbold';
-import { Inezparser, SetupOptions } from 'nezparser';
-import { gitPush } from './helpers/git';
-import { join } from 'path';
-
-interface Conf extends SetupOptions {
-  render: string;
-}
+import {Inezparser} from 'nezparser';
+import {gitPush} from './helpers/git';
+import {Conf} from './app';
 
 export class Commity {
-  static async run(nezparser: Inezparser): Promise<void> {
-    let finalMsg = '';
-    let stagedCount: number;
-    let changesCount: number;
-    let conf: Conf;
+  nezparser: Inezparser;
+  conf: Conf;
+  finalMsg = '';
+  stagedCount = 0;
+  changesCount = 0;
+  result: Fields;
 
-    
-    /**
-     * Check that commity.json file exist in current working directory
-     */
-    try {
-      conf = await import(join(process.cwd(), 'commity.json'));
-    } catch (error) {
-      tricolors.redLog('Commity is not initialized. Please run "commity init" to init your workspace.');
-      process.exit();
-    }
+  constructor(nezparser: Inezparser, conf: Conf) {
+    this.nezparser = nezparser;
+    this.conf = conf;
+    this.result = null as unknown as Fields;
+  }
 
-    /**
-     * Check there are changes to commit
-     */
+  async run(): Promise<void> {
+    await this.checkChangesCount();
+    await this.handleAddAllOption();
+    await this.checkStagedCount();
+    await this.getFields();
+
+    const render = this.conf.render;
+    const values = this.result.values;
+    const hasOwn = Object.prototype.hasOwnProperty;
+    const commitMsg = render.replace(
+        /\$\+(\w+)/gui,
+        (whole: any, key: string) => hasOwn.call(values, key) ? values[key] : whole,
+    );
+
+    this.finalMsg += tricolors.green('Commited ' + this.stagedCount + ' files. ') + nezbold.bold(commitMsg);
+
+    await this.commit(commitMsg);
+    await this.handlePushOption();
+
+    console.log(this.finalMsg);
+    process.exit();
+  }
+
+  async checkChangesCount(): Promise<void> {
     try {
-      changesCount = await gitChangesCount();
-      if (changesCount < 1) {
+      this.changesCount = await gitChangesCount();
+      if (this.changesCount < 1) {
         tricolors.redLog('No changes detected, cannot commit.');
         process.exit();
       }
     } catch (e) {
-      tricolors.redLog('Error while count changes, cannot commit. ' + e,);
+      tricolors.redLog('Error while count changes, cannot commit. ' + e);
       process.exit();
     }
+  }
 
-    /**
-     * Get number of staged files
-     */
-    try {
-      stagedCount = await gitStagedCount();
-      if (stagedCount === 0 && !nezparser.hasOption('addAll', 'a')) {
-        tricolors.redLog('Are you sure there are staged changes to commit ?');
-        process.exit();
-      }
-    } catch (e) {
-      tricolors.redLog(e);
-      process.exit();
-    }
-
-    /**
-     * Handle options --addAll, -a
-     */
-    if (nezparser.hasOption('addAll', 'a') && (changesCount - stagedCount) > 0) {
+  async handleAddAllOption(): Promise<void> {
+    this.stagedCount = await gitStagedCount();
+    if (this.nezparser.hasOption('addAll', 'a') && (this.changesCount - this.stagedCount) > 0) {
       try {
         await gitAddAll();
-        tricolors.greenLog('Added ' + (changesCount - stagedCount) + ' files to staged changed \r\n');
-        stagedCount += changesCount - stagedCount;
+        tricolors.greenLog('Added ' + (this.changesCount - this.stagedCount) + ' files to staged changes \r\n');
+        this.stagedCount += this.changesCount - this.stagedCount;
       } catch (e) {
         tricolors.redLog(e);
       }
     }
+  }
 
-    /**
-     * commitParts() will prompt to user all the needed parts of the commit
-     */
-    let result;
+  checkStagedCount(): void {
+    if (this.stagedCount === 0 && !this.nezparser.hasOption('addAll', 'a')) {
+      tricolors.redLog('Are you sure there are staged changes to commit ?');
+      process.exit();
+    }
+  }
+
+  async getFields(): Promise<void> {
     try {
-      result = await fields();
+      this.result = await fields();
     } catch (e) {
       tricolors.redLog(e);
       process.exit();
     }
+  }
 
-    const render = conf.render;
-    const values = result.values;
-    const hasOwn = Object.prototype.hasOwnProperty;
-    const commitMsg = render.replace(
-      /\$\+(\w+)/gui,
-      (whole: any, key: PropertyKey) => hasOwn.call(values, key) ? values[key] : whole,
-    );
-
-    finalMsg += tricolors.green('Commited ' + stagedCount + ' files. ') + nezbold.bold(commitMsg);
-    /**
-     * Try to commit
-     */
+  async commit(msg: string): Promise<void> {
     try {
-      await gitCommit(commitMsg);
+      await gitCommit(msg);
     } catch (e) {
       tricolors.redLog(e);
       process.exit();
     }
+  }
 
-    /**
-     * Handle options --push, -p
-     */
-    if (nezparser.hasOption('push', 'p')) {
+  async handlePushOption(): Promise<void> {
+    if (this.nezparser.hasOption('push', 'p')) {
       try {
         await gitPush();
-        finalMsg += '\r\n' + nezbold.bold('Pushed commited changes');
+        this.finalMsg += '\r\n' + nezbold.bold('Pushed commited changes');
       } catch (e) {
         tricolors.redLog(e);
       }
     }
-
-    console.log(finalMsg);
-    process.exit();
   }
-} 
+}

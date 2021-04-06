@@ -1,36 +1,46 @@
 #!/usr/bin/env node
 
+export interface Conf extends SetupOptions {
+  render: string;
+}
+
 import tricolors from 'tricolors';
 import fs from 'fs';
-import nezparser, { Inezparser, SetupOptions } from 'nezparser';
-import { Init } from './commands/init';
-import { Commity } from './commity';
-import { join } from 'path';
+import nezparser, {Inezparser, SetupOptions} from 'nezparser';
+import {Commity} from './commity';
+import {join} from 'path';
+import {InitCommandHandler} from './commands/init';
 
-class App {
-  initialized = true;
-  conf: SetupOptions | undefined;
+export class App {
+  conf: Conf | undefined;
 
   constructor() {
-    this.initialize();
   }
 
   async initialize(): Promise<void> {
-    try {
-      await this.isGitInitialized();
-      await this.setupParser();
-      
-      nezparser.on('init').so(() => {
-        this.initialized = false;
-        Init.initialize();
-      });
+    await this.isGitInitialized();
+    this.setupParser();
 
-      if (this.initialized) {
-        await this.isCommityFriendly();
-        Commity.run(nezparser as Inezparser);
+    if (nezparser.commandUsed('init')) {
+      const initCommandHandler = new InitCommandHandler(nezparser as Inezparser);
+
+      try {
+        await initCommandHandler.run();
+      } catch (e) {
+        throw new Error(e);
       }
-    } catch (error) {
-      throw new Error(error);
+
+      return;
+    }
+
+    await this.isCommityFriendly();
+
+    const commity = new Commity(nezparser as Inezparser, this.conf as Conf);
+
+    try {
+      await commity.run();
+    } catch (e) {
+      throw new Error(e);
     }
   }
 
@@ -49,11 +59,12 @@ class App {
       await fs.promises.access(path, fs.constants.F_OK);
       return;
     } catch (error) {
-      throw new Error(error);
+      tricolors.redLog('Current directory is not a Git repository.');
+      process.exit();
     }
   }
 
-  async setupParser(): Promise<void> {
+  setupParser(): void {
     nezparser.setup({
       usage: 'commity <command> <options>',
       options: [
@@ -85,5 +96,3 @@ class App {
     nezparser.parse();
   }
 }
-
-new App();
