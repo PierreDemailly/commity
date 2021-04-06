@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+# 1.6.3
+
++ add --overwrite, -o option
+
+# 1.6.0
+
++ add unit tests, improve package, dev tools
+
+# 1.5.0
+
++ Refacto with new version of dependencies
+
+# 1.4.0
+
++ Make commity working on multiple os
+
 # 1.3.0
 
 + Migrate to typescript

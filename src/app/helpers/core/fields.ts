@@ -5,18 +5,17 @@ interface FieldValue {
   [number: number]: string | object;
 }
 
-interface Fields {
+export interface Fields {
   fieldsNames: string[];
   values: FieldValue;
 }
 
-export const fields = (): Promise<any> => {
+export const fields = (): Promise<Fields> => {
   return new Promise(async (resolve, reject) => {
     const conf = require(process.cwd() + '/commity.json');
     const inquirerPrompts = [];
     const fields = conf.fields;
     const fieldsNames = [];
-
     for (const field in fields) {
       const fieldName = Object.keys(fields[field]).join();
       fieldsNames.push(fieldName);
@@ -28,12 +27,12 @@ export const fields = (): Promise<any> => {
           type: fieldObject['type'] === 'select' ? 'list' : 'input',
           message: fieldObject['label'],
           choices: fieldObject['selectOptions'] || null,
-        })
+        });
       };
       inquirerPrompts.push(prompt);
     }
 
-    const results: Fields = { fieldsNames, values: {} };
+    const results: Fields = {fieldsNames, values: {}};
 
     for (let i = 0; i < inquirerPrompts.length; i++) {
       try {
@@ -46,7 +45,6 @@ export const fields = (): Promise<any> => {
         process.exit();
       }
     }
-
     resolve(results);
   });
-}
+};

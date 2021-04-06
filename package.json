@@ -1,6 +1,6 @@
 {
   "name": "@pierred/commity",
-  "version": "1.3.4",
+  "version": "1.6.3",
   "description": "Setup commits convention fast & simple.",
   "keywords": [
     "workflow",
@@ -14,19 +14,41 @@
     "commity",
     "workflow-tool"
   ],
-  "main": "./dist/app/app.js",
+  "main": "./dist/main.js",
   "scripts": {
     "prestart": "npm run build",
-    "start": "node ./dist/app/app.js",
-    "build": "tsc"
+    "start": "node ./dist/main.js",
+    "prebuild": "rimraf dist",
+    "build": "tsc",
+    "test": "npx jest",
+    "test:dev": "node_modules/.bin/jest --coverage --verbose true --runInBand",
+    "lint": "eslint ./src/**/**.ts",
+    "lint:fix": "eslint ./src/**/**.ts --fix"
   },
   "author": "PierreDemailly",
   "license": "ISC",
   "dependencies": {
     "inquirer": "^7.3.3",
     "nezbold": "^1.2.1",
-    "nezparser": "^1.7.3",
+    "nezparser": "^1.8.4",
     "tricolors": "^1.5.4"
+  },
+  "devDependencies": {
+    "@types/inquirer": "^7.3.1",
+    "@types/jasmine": "^3.6.9",
+    "@types/jest": "^26.0.22",
+    "@types/node": "^14.14.37",
+    "@types/promise-fs": "^2.1.1",
+    "@typescript-eslint/eslint-plugin": "^4.16.1",
+    "@typescript-eslint/parser": "^4.16.1",
+    "chai": "^4.3.4",
+    "eslint": "^7.21.0",
+    "eslint-config-google": "^0.14.0",
+    "jest": "^26.6.3",
+    "pino": "^6.11.2",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^26.5.4",
+    "typescript": "^4.2.3"
   },
   "bin": {
     "commity": "./dist/app/app.js"
@@ -39,10 +61,7 @@
     "url": "https://github.com/PierreDemailly/commity"
   },
   "homepage": "https://github.com/PierreDemailly/commity#readme",
-  "devDependencies": {
-    "@types/inquirer": "^7.3.1",
-    "@types/node": "^14.14.35",
-    "@types/promise-fs": "^2.1.1",
-    "typescript": "^4.2.3"
+  "engines": {
+    "node": ">=14.16.0"
   }
 }
