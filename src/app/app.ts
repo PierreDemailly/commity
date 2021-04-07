@@ -2,6 +2,12 @@
 
 export interface Conf extends SetupOptions {
   render: string;
+  renderComponents: renderComponent[];
+}
+
+interface renderComponent {
+  name: string;
+  message: string;
 }
 
 import tricolors from 'tricolors';
