@@ -31,16 +31,16 @@ export class Commity {
     const render = this.conf.render.split(' ');
     const values = this.result.values;
     const renderComponent = this.conf.renderComponents;
-    const renderFinal: string[] = [];
+    let commitMsg: string[] | string = [];
     const renderLength = render.length;
     for(let i = 0; i < renderLength; i++) {
       if((values[render[i]] as string).length > 0) {
         const component = renderComponent.filter(comp => comp.name === render[i])[0];
         const message = component.message.replace(`$+${component.name}`, (values[render[i]] as string));
-        renderFinal.push(message);
+        commitMsg.push(message);
       }
     }
-    const commitMsg = renderFinal.join(' ');
+    commitMsg = commitMsg.join(' ');
     this.finalMsg += tricolors.green('Commited ' + this.stagedCount + ' files. ') + nezbold.bold(commitMsg);
     await this.commit(commitMsg);
     await this.handlePushOption();
