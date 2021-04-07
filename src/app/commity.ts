@@ -33,9 +33,9 @@ export class Commity {
     const renderComponent = this.conf.renderComponents;
     let commitMsg: string[] | string = [];
     const renderLength = render.length;
-    for(let i = 0; i < renderLength; i++) {
-      if((values[render[i]] as string).length > 0) {
-        const component = renderComponent.filter(comp => comp.name === render[i])[0];
+    for (let i = 0; i < renderLength; i++) {
+      if ((values[render[i]] as string).length > 0) {
+        const component = renderComponent.filter((comp) => comp.name === render[i])[0];
         const message = component.message.replace(`$+${component.name}`, (values[render[i]] as string));
         commitMsg.push(message);
       }
