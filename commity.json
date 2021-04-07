@@ -39,5 +39,19 @@
       }
     }
   ],
-  "render": "$+scope #$+ticket: $+message"
+  "render": "scope ticket message",
+  "renderComponents": [
+    {
+      "name": "scope",
+      "message": "$+scope"
+    },
+    {
+      "name": "ticket",
+      "message": "#$+ticket:"
+    },
+    {
+      "name": "message",
+      "message": "$+message"
+    }
+  ]
 }
