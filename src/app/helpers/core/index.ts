@@ -1,7 +1,7 @@
-import { 
-  fields
+import {
+  fields,
 } from './fields';
 
 export {
-  fields
+  fields,
 };

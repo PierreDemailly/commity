@@ -20,6 +20,10 @@
           {
             "value": "refactor",
             "description": "Changes that neither fixes a bug or adds a feature"
+          },
+          {
+            "value": "spec",
+            "description": "Changes that affect unit tests"
           }
         ]
       }
@@ -35,5 +39,19 @@
       }
     }
   ],
-  "render": "$+scope #$+ticket: $+message"
+  "render": "scope ticket message",
+  "renderComponents": [
+    {
+      "name": "scope",
+      "message": "$+scope"
+    },
+    {
+      "name": "ticket",
+      "message": "#$+ticket:"
+    },
+    {
+      "name": "message",
+      "message": "$+message"
+    }
+  ]
 }
