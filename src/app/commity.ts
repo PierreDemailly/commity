@@ -26,22 +26,24 @@ export class Commity {
   async run(): Promise<void> {
     await this.checkChangesCount();
     await this.handleAddAllOption();
-    await this.checkStagedCount();
+    this.checkStagedCount();
     await this.getFields();
-
-    const render = this.conf.render;
+    const render = this.conf.render.split(' ');
     const values = this.result.values;
-    const hasOwn = Object.prototype.hasOwnProperty;
-    const commitMsg = render.replace(
-        /\$\+(\w+)/gui,
-        (whole: any, key: string) => hasOwn.call(values, key) ? values[key] : whole,
-    );
-
+    const renderComponent = this.conf.renderComponents;
+    const renderFinal: string[] = [];
+    const renderLength = render.length;
+    for(let i = 0; i < renderLength; i++) {
+      if((values[render[i]] as string).length > 0) {
+        const component = renderComponent.filter(comp => comp.name === render[i])[0];
+        const message = component.message.replace(`$+${component.name}`, (values[render[i]] as string));
+        renderFinal.push(message);
+      }
+    }
+    const commitMsg = renderFinal.join(' ');
     this.finalMsg += tricolors.green('Commited ' + this.stagedCount + ' files. ') + nezbold.bold(commitMsg);
-
     await this.commit(commitMsg);
     await this.handlePushOption();
-
     console.log(this.finalMsg);
     process.exit();
   }
