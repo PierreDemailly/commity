@@ -41,9 +41,9 @@ export class Commity {
       }
     }
     commitMsg = commitMsg.join(' ');
-    this.finalMsg += tricolors.green('Commited ' + this.stagedCount + ' files. ') + nezbold.bold(commitMsg);
     await this.commit(commitMsg);
     await this.handlePushOption();
+    this.finalMsg += tricolors.green('Commited ' + this.stagedCount + ' files. ') + nezbold.bold(commitMsg);
     console.log(this.finalMsg);
     process.exit();
   }
