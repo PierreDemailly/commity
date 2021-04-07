@@ -53,7 +53,7 @@ describe('Commity', () => {
     } as any;
     commity.conf = {
       render: 'foo',
-      renderComponents: [{name: 'foo', message: '$+foo'}]
+      renderComponents: [{name: 'foo', message: '$+foo'}],
     } as any;
     spyOn(commity.nezparser, 'hasOption').and.callFake(() => Promise.resolve()),
     spyOn(commity, 'handleAddAllOption').and.callFake(() => Promise.resolve());
