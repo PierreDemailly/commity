@@ -47,13 +47,13 @@ describe('Commity', () => {
 
   it('should have 748 changes', async () => {
     commity.result = {
-      render: 'render',
       values: {
         foo: 'bar',
       },
     } as any;
     commity.conf = {
-      render: 'foo $+foo $+bar',
+      render: 'foo',
+      renderComponents: [{name: 'foo', message: '$+foo'}]
     } as any;
     spyOn(commity.nezparser, 'hasOption').and.callFake(() => Promise.resolve()),
     spyOn(commity, 'handleAddAllOption').and.callFake(() => Promise.resolve());
@@ -64,7 +64,7 @@ describe('Commity', () => {
     spyOn(process, 'exit').and.callFake(() => {});
     spyOn(console, 'log').and.callFake(() => {});
     await commity.run();
-    const res = `${tricolors.green('Commited 0 files. ')}${nezbold.bold('foo bar $+bar')}`;
+    const res = `${tricolors.green('Commited 0 files. ')}${nezbold.bold('bar')}`;
     expect(console.log).toHaveBeenCalledWith(res);
     expect(commity.changesCount).toEqual(748);
   });
