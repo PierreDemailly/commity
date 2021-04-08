@@ -2,7 +2,7 @@ import inquirer from 'inquirer';
 import fs from 'fs';
 import tricolors from 'tricolors';
 import commity from '../../commity.json';
-import { Inezparser } from 'nezparser';
+import {Inezparser} from 'nezparser';
 
 export class InitCommandHandler {
   nezparser: Inezparser
