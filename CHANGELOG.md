@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+# 1.6.4
+
++ fix local bug that make build throw
++ fix a bug that make commity not working
+
 # 1.6.3
 
 + add --overwrite, -o option
