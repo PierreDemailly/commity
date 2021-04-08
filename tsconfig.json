@@ -11,6 +11,12 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "experimentalDecorators": true,
+    "allowJs": true,
   },
-  "exclude": ["src/spec/*"]
+  "exclude": [
+    "src/spec/*",
+    "dist/**/*",
+    "coverage/**/*",
+    "jest.config.js"
+  ]
 }

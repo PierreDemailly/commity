@@ -24,6 +24,10 @@
           {
             "value": "spec",
             "description": "Changes that affect unit tests"
+          },
+          {
+            "value": "pkg",
+            "description": "Changes that affect package (deps, config, readme...)"
           }
         ]
       }
