@@ -1,6 +1,8 @@
 import {App} from './app/app';
 
-(async () => {
+async function main() {
   const app = new App();
   await app.initialize();
-})();
+}
+
+main();
