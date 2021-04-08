@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 export interface Conf extends SetupOptions {
   render: string;
 }
