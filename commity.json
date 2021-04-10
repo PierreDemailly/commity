@@ -29,19 +29,31 @@
             "value": "pkg",
             "description": "Changes that affect package (deps, config, readme...)"
           }
-        ]
+        ],
+        "required": false
       }
     },
     {
       "message": {
-        "label": "Choose the commit message"
+        "label": "Choose the commit message",
+        "decorations": {
+          "prefix": ":",
+          "prefixRequireField": [
+            "scope",
+            "ticket"
+          ]
+        }
       }
     },
     {
       "ticket": {
-        "label": "What is the issue id"
+        "label": "What is the issue id",
+        "required": false,
+        "decorations": {
+          "prefix": " #"
+        }
       }
     }
   ],
-  "render": "$+scope #$+ticket: $+message"
+  "render": "$+scope $+ticket $+message"
 }
