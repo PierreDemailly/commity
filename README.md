@@ -18,7 +18,7 @@ You can use it globally for personnal use
 
     npm i -g @pierred/commity
 
-But I would recommand to use it locally in team so u are sure everyone use the same version
+But I would recommand to use it locally in team to make sure everyone use the same version
 
     npm i -D @pierred/commity
 
