@@ -14,9 +14,13 @@ node >= 14.16.0
 
 ## Installation
 
-I highly recommand to use it globally.
+You can use it globally for personnal use
 
     npm i -g @pierred/commity
+
+But I would recommand to use it locally in team so u are sure everyone use the same version
+
+    npm i -D @pierred/commity
 
 ## Get started
 
