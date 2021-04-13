@@ -2,14 +2,14 @@ import inquirer from 'inquirer';
 import fs from 'fs';
 import tricolors from 'tricolors';
 import commity from '../../commity.json';
-import {Inezparser} from 'nezparser';
+import {Iclargs} from '@clinjs/clargs';
 
 export class InitCommandHandler {
-  nezparser: Inezparser
+  clargs: Iclargs
   commityFileExist = false;
 
-  constructor(nezparser: Inezparser) {
-    this.nezparser = nezparser;
+  constructor(clargs: Iclargs) {
+    this.clargs = clargs;
   }
 
   async run(): Promise<void> {
@@ -17,7 +17,7 @@ export class InitCommandHandler {
 
     this.commityFileExist = await this.fileExist(path);
     if (this.commityFileExist) {
-      if (!this.nezparser.hasOption('overwrite', 'o')) {
+      if (!this.clargs.hasOption('overwrite', 'o')) {
         let overwriteResult;
         try {
           overwriteResult = await inquirer.prompt({

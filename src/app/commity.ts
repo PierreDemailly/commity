@@ -5,20 +5,20 @@ import {gitStagedCount} from './helpers/git/stagedCount';
 import {Fields, fields} from './helpers/core/fields';
 import tricolors from 'tricolors';
 import nezbold from 'nezbold';
-import {Inezparser} from 'nezparser';
+import {Iclargs} from '@clinjs/clargs';
 import {gitPush} from './helpers/git';
 import {Conf} from './app';
 
 export class Commity {
-  nezparser: Inezparser;
+  clargs: Iclargs;
   conf: Conf;
   finalMsg = '';
   stagedCount = 0;
   changesCount = 0;
   result: Fields;
 
-  constructor(nezparser: Inezparser, conf: Conf) {
-    this.nezparser = nezparser;
+  constructor(clargs: Iclargs, conf: Conf) {
+    this.clargs = clargs;
     this.conf = conf;
     this.result = null as unknown as Fields;
   }
@@ -61,7 +61,7 @@ export class Commity {
 
   async handleAddAllOption(): Promise<void> {
     this.stagedCount = await gitStagedCount();
-    if (this.nezparser.hasOption('addAll', 'a') && (this.changesCount - this.stagedCount) > 0) {
+    if (this.clargs.hasOption('addAll', 'a') && (this.changesCount - this.stagedCount) > 0) {
       try {
         await gitAddAll();
         tricolors.greenLog('Added ' + (this.changesCount - this.stagedCount) + ' files to staged changes \r\n');
@@ -73,7 +73,7 @@ export class Commity {
   }
 
   checkStagedCount(): void {
-    if (this.stagedCount === 0 && !this.nezparser.hasOption('addAll', 'a')) {
+    if (this.stagedCount === 0 && !this.clargs.hasOption('addAll', 'a')) {
       tricolors.redLog('Are you sure there are staged changes to commit ?');
       process.exit();
     }
@@ -98,7 +98,7 @@ export class Commity {
   }
 
   async handlePushOption(): Promise<void> {
-    if (this.nezparser.hasOption('push', 'p')) {
+    if (this.clargs.hasOption('push', 'p')) {
       try {
         await gitPush();
         this.finalMsg += '\r\n' + nezbold.bold('Pushed commited changes');

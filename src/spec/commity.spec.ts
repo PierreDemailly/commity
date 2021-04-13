@@ -1,4 +1,4 @@
-import {Inezparser} from 'nezparser';
+import {Iclargs} from '@clinjs/clargs';
 import {Conf} from '../app/app';
 import {fields} from '../app/helpers/core/fields';
 import {Commity} from './../app/commity';
@@ -39,7 +39,7 @@ jest.mock('../app/helpers/git/addAll', () => ({
   gitAddAll: jest.fn().mockResolvedValue(Promise.resolve()),
 }));
 describe('Commity', () => {
-  const commity = new Commity({hasOption: (opt: string, alias: string) => true} as Inezparser, {} as Conf);
+  const commity = new Commity({hasOption: (opt: string, alias: string) => true} as Iclargs, {} as Conf);
 
   it('should be defined', () => {
     expect(commity).toBeTruthy();
@@ -55,7 +55,7 @@ describe('Commity', () => {
     commity.conf = {
       render: 'foo $+foo $+bar',
     } as any;
-    spyOn(commity.nezparser, 'hasOption').and.callFake(() => Promise.resolve()),
+    spyOn(commity.clargs, 'hasOption').and.callFake(() => Promise.resolve()),
     spyOn(commity, 'handleAddAllOption').and.callFake(() => Promise.resolve());
     spyOn(commity, 'getFields').and.callFake(() => Promise.resolve());
     spyOn(commity, 'checkStagedCount').and.callFake(() => Promise.resolve());
@@ -109,7 +109,7 @@ describe('Commity', () => {
 
   it('should check staged count', async () => {
     process.argv = ['1', '1', '1'];
-    spyOn(commity.nezparser, 'hasOption').and.callFake(() => false);
+    spyOn(commity.clargs, 'hasOption').and.callFake(() => false);
     spyOn(process, 'exit').and.callFake(() => {});
     commity.stagedCount = 0;
     spyOn(tricolors, 'redLog');

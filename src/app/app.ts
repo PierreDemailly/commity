@@ -4,7 +4,7 @@ export interface Conf extends SetupOptions {
 
 import tricolors from 'tricolors';
 import fs from 'fs';
-import nezparser, {Inezparser, SetupOptions} from 'nezparser';
+import clargs, {Iclargs, SetupOptions} from '@clinjs/clargs';
 import {Commity} from './commity';
 import {join} from 'path';
 import {InitCommandHandler} from './commands/init';
@@ -19,8 +19,8 @@ export class App {
     await this.isGitInitialized();
     this.setupParser();
 
-    if (nezparser.commandUsed('init')) {
-      const initCommandHandler = new InitCommandHandler(nezparser as Inezparser);
+    if (clargs.commandUsed('init')) {
+      const initCommandHandler = new InitCommandHandler(clargs as Iclargs);
 
       try {
         await initCommandHandler.run();
@@ -33,7 +33,7 @@ export class App {
 
     await this.isCommityFriendly();
 
-    const commity = new Commity(nezparser as Inezparser, this.conf as Conf);
+    const commity = new Commity(clargs as Iclargs, this.conf as Conf);
 
     try {
       await commity.run();
@@ -63,7 +63,7 @@ export class App {
   }
 
   setupParser(): void {
-    nezparser.setup({
+    clargs.setup({
       usage: 'commity <command> <options>',
       options: [
         {
@@ -91,6 +91,6 @@ export class App {
         },
       ],
     });
-    nezparser.parse();
+    clargs.parse();
   }
 }
