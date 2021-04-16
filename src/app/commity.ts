@@ -26,7 +26,7 @@ export class Commity {
   async run(): Promise<void> {
     await this.checkChangesCount();
     await this.handleAddAllOption();
-    await this.checkStagedCount();
+    this.checkStagedCount();
     await this.getFields();
 
     const render = this.conf.render;
