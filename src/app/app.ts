@@ -1,5 +1,6 @@
 export interface Conf extends SetupOptions {
   render: string;
+  fields: any[];
 }
 
 import tricolors from 'tricolors';
