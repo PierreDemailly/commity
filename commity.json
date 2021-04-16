@@ -50,5 +50,5 @@
       }
     }
   ],
-  "render": "$+scope $+ticket$+message"
+  "render": "{{scope}}{{ticket}}{{message}}"
 }
