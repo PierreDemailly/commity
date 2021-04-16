@@ -44,7 +44,7 @@
       "ticket": {
         "label": "What is the issue id",
         "decorations": {
-          "prefix": "#"
+          "prefix": " #"
         },
         "required": false
       }
