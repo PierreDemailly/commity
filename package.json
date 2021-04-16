@@ -28,9 +28,9 @@
   "author": "PierreDemailly",
   "license": "ISC",
   "dependencies": {
+    "@clinjs/clargs": "^1.0.2",
     "inquirer": "^7.3.3",
     "nezbold": "^1.2.1",
-    "nezparser": "^1.8.4",
     "tricolors": "^1.5.4"
   },
   "devDependencies": {
@@ -39,16 +39,16 @@
     "@types/jest": "^26.0.22",
     "@types/node": "^14.14.37",
     "@types/promise-fs": "^2.1.1",
-    "@typescript-eslint/eslint-plugin": "^4.16.1",
-    "@typescript-eslint/parser": "^4.16.1",
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
     "chai": "^4.3.4",
-    "eslint": "^7.21.0",
+    "eslint": "^7.24.0",
     "eslint-config-google": "^0.14.0",
     "jest": "^26.6.3",
     "pino": "^6.11.2",
     "rimraf": "^3.0.2",
     "ts-jest": "^26.5.4",
-    "typescript": "^4.2.3"
+    "typescript": "^4.2.4"
   },
   "bin": {
     "commity": "./dist/main.js"

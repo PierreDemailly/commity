@@ -1,6 +1,6 @@
 import {InitCommandHandler} from './../app/commands/init';
 import inquirer from 'inquirer';
-import nezparser, {Inezparser} from 'nezparser';
+import clargs, {Iclargs} from '@clinjs/clargs';
 
 jest.mock('fs', () => ({
   access: jest.fn((path: string, mode: number, err) => err(null)),
@@ -19,14 +19,14 @@ jest.mock('tricolors', () => ({
 }));
 
 import tricolors from 'tricolors';
-nezparser.setup({
+clargs.setup({
   usage: 'fake',
   options: [],
   commands: [],
 });
-nezparser.parse();
+clargs.parse();
 describe('InitCommandHandler', () => {
-  const initCommandHandler = new InitCommandHandler(nezparser as Inezparser);
+  const initCommandHandler = new InitCommandHandler(clargs as Iclargs);
 
   it('should run', async () => {
     spyOn(initCommandHandler, 'fileExist').and.callFake(() => Promise.resolve(true));

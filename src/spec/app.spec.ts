@@ -11,13 +11,13 @@ jest.mock('./../app/commands/init', () => ({
     run: jest.fn().mockResolvedValue(true),
   }),
 }));
-jest.mock('nezparser', () => ({
+jest.mock('@clinjs/clargs', () => ({
   commandUsed: jest.fn().mockReturnValue(false),
   setup: jest.fn(),
   parse: jest.fn(),
 }));
 
-import nezparser from 'nezparser';
+import clargs from '@clinjs/clargs';
 
 import {App} from './../app/app';
 
@@ -43,8 +43,8 @@ describe('App', () => {
   });
 
   it('should have init command', async () => {
-    (nezparser.commandUsed as any).mockReturnValue(true);
-    (nezparser.setup as any).mockReturnValue(true);
+    (clargs.commandUsed as any).mockReturnValue(true);
+    (clargs.setup as any).mockReturnValue(true);
     spyOn(app, 'isCommityFriendly');
     await app.initialize();
     expect(app.isCommityFriendly).not.toHaveBeenCalled();
