@@ -53,7 +53,8 @@ describe('Commity', () => {
       },
     } as any;
     commity.conf = {
-      render: 'foo $+foo $+bar',
+      fields: [{ foo: {}}],
+      render: 'foo {{foo}} {{bar}}',
     } as any;
     spyOn(commity.clargs, 'hasOption').and.callFake(() => Promise.resolve()),
     spyOn(commity, 'handleAddAllOption').and.callFake(() => Promise.resolve());
@@ -64,7 +65,7 @@ describe('Commity', () => {
     spyOn(process, 'exit').and.callFake(() => {});
     spyOn(console, 'log').and.callFake(() => {});
     await commity.run();
-    const res = `${tricolors.green('Commited 0 files. ')}${nezbold.bold('foo bar $+bar')}`;
+    const res = `${tricolors.green('Commited 0 files. ')}${nezbold.bold('foo bar {{bar}}')}`;
     expect(console.log).toHaveBeenCalledWith(res);
     expect(commity.changesCount).toEqual(748);
   });
