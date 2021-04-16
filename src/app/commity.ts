@@ -34,18 +34,18 @@ export class Commity {
     const hasOwn = Object.prototype.hasOwnProperty;
     const commitMsg = render.replace(
       /{{\s*([^}]+)\s*}}/g,
-        (whole: any, key: string) => hasOwn.call(values, key) ? (() => {
-          const field = this.conf.fields.find(field => field[key])[key];
-          console.log(field);
-          const prefix = field.decorations?.prefix;
-          if (prefix) {
-            console.log(prefix);
-            values[key] = prefix + values[key];
-          }
-          return values[key];
-        })() : whole,
+      (whole: any, key: string) => hasOwn.call(values, key) ? (() => {
+        const field = this.conf.fields.find(field => field[key])[key];
+        if (!values[key] && field.required === false) {
+          return '';
+        }
+        const prefix = field.decorations?.prefix;
+        if (prefix) {
+          values[key] = prefix + values[key];
+        }
+        return values[key];
+      })() : whole,
     );
-
 
     await this.commit(commitMsg);
     await this.handlePushOption();
