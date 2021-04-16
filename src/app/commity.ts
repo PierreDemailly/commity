@@ -1,12 +1,7 @@
-import {gitCommit} from './helpers/git/commit';
-import {gitChangesCount} from './helpers/git/changesCount';
-import {gitAddAll} from './helpers/git/addAll';
-import {gitStagedCount} from './helpers/git/stagedCount';
-import {Fields, fields} from './helpers/core/fields';
 import tricolors from 'tricolors';
 import nezbold from 'nezbold';
 import {Iclargs} from '@clinjs/clargs';
-import {gitPush} from './helpers/git';
+import {gitAddAll, gitChangesCount, gitCommit, gitPush, gitStagedCount, fields, Fields} from './helpers';
 import {Conf} from './app';
 
 export class Commity {
