@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+# 1.7.0
+
++ feat decorations and optionnal rendering
++ rendering is now based on moustache
+
+# 1.6.5
+
++ fix a bug due to shebang line
+
 # 1.6.4
 
 + fix local bug that make build throw
