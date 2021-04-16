@@ -66,22 +66,37 @@ As You may see in `commity.json`, there are 2 parts you can configure: `fields` 
           {
             "value": "refactor",
             "description": "Changes that neither fixes a bug or adds a feature"
+          },
+          {
+            "value": "spec",
+            "description": "Changes that affect unit tests"
+          },
+          {
+            "value": "pkg",
+            "description": "Changes that affect package (deps, config, readme...)"
           }
         ]
       }
     },
     {
       "message": {
-        "label": "Choose the commit message"
+        "label": "Choose the commit message",
+        "decorations": {
+          "prefix": ": "
+        }
       }
     },
     {
       "ticket": {
-        "label": "What is the issue id"
+        "label": "What is the issue id",
+        "decorations": {
+          "prefix": " #"
+        },
+        "required": false
       }
     }
   ],
-  "render": "$+scope #$+ticket: $+message"
+  "render": "{{scope}}{{ticket}}{{message}}"
 }
 ```
 
@@ -91,6 +106,6 @@ You can choose 2 types of field:
 - simple input where you just need a `label`
 - select input where you have to add `"type": "select"` and provide `selectOptions`
 
-`render` take the formatted string, replacing `$+<commit field's key>` with the user input.
+`render` take the formatted string, replacing `{{<commit field's key>}}` with the user input.
 
 **More features incoming :tada:**
