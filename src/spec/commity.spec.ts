@@ -53,7 +53,7 @@ describe('Commity', () => {
       },
     } as any;
     commity.conf = {
-      fields: [{ foo: {}}],
+      fields: [{foo: {}}],
       render: 'foo {{foo}} {{bar}}',
     } as any;
     spyOn(commity.clargs, 'hasOption').and.callFake(() => Promise.resolve()),

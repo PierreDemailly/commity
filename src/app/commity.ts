@@ -6,7 +6,7 @@ import {Conf} from './app';
 
 export class Commity {
   clargs: Iclargs;
-  conf: Conf; 
+  conf: Conf;
   finalMsg = '';
   stagedCount = 0;
   changesCount = 0;
@@ -28,18 +28,18 @@ export class Commity {
     const values = this.result.values;
     const hasOwn = Object.prototype.hasOwnProperty;
     const commitMsg = render.replace(
-      /{{\s*([^}]+)\s*}}/g,
-      (whole: any, key: string) => hasOwn.call(values, key) ? (() => {
-        const field = this.conf.fields.find(field => field[key])[key];
-        if (!values[key] && field.required === false) {
-          return '';
-        }
-        const prefix = field.decorations?.prefix;
-        if (prefix) {
-          values[key] = prefix + values[key];
-        }
-        return values[key];
-      })() : whole,
+        /{{\s*([^}]+)\s*}}/g,
+        (whole: any, key: string) => hasOwn.call(values, key) ? (() => {
+          const field = this.conf.fields.find((field) => field[key])[key];
+          if (!values[key] && field.required === false) {
+            return '';
+          }
+          const prefix = field.decorations?.prefix;
+          if (prefix) {
+            values[key] = prefix + values[key];
+          }
+          return values[key];
+        })() : whole,
     );
 
     await this.commit(commitMsg);
