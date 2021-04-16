@@ -11,7 +11,7 @@ import {Conf} from './app';
 
 export class Commity {
   clargs: Iclargs;
-  conf: Conf;
+  conf: Conf; 
   finalMsg = '';
   stagedCount = 0;
   changesCount = 0;
@@ -33,8 +33,17 @@ export class Commity {
     const values = this.result.values;
     const hasOwn = Object.prototype.hasOwnProperty;
     const commitMsg = render.replace(
-        /\$\+(\w+)/gui,
-        (whole: any, key: string) => hasOwn.call(values, key) ? values[key] : whole,
+      /{{\s*([^}]+)\s*}}/g,
+        (whole: any, key: string) => hasOwn.call(values, key) ? (() => {
+          const field = this.conf.fields.find(field => field[key])[key];
+          console.log(field);
+          const prefix = field.decorations?.prefix;
+          if (prefix) {
+            console.log(prefix);
+            values[key] = prefix + values[key];
+          }
+          return values[key];
+        })() : whole,
     );
 
 
