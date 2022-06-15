@@ -104,7 +104,7 @@ As You may see in `commity.json`, there are 2 parts you can configure: `fields` 
 }
 ```
 
-Your fields take a `field's key`, in the above example there are two `field's key` : *scope*, *message* and *ticket*.
+Your fields take a `field's key`, in the above example there are three `field's key` : *scope*, *message* and *ticket*.
 
 You can choose 2 types of field:
 - simple input where you just need a `label`
