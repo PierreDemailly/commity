@@ -37,7 +37,7 @@ describe('fields', () => {
   it('should reject', () => {
     (inquirer as any).prompt.mockRejectedValue('fake error');
     fields().catch((e) => {
-      expect(e).toEqual(new Error('fake error'));
+      expect(e).toEqual('fake error');
       expect(process.exit).toHaveBeenCalled();
     });
   });

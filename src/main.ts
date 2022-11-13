@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import {App} from './app/app';
+import {App} from './app/app.js';
 
 async function main() {
   const app = new App();

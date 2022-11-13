@@ -4,11 +4,7 @@ import {fields} from '../app/helpers/core/fields';
 import {Commity} from './../app/commity';
 import nezbold from 'nezbold';
 import tricolors from 'tricolors';
-import {gitChangesCount} from '../app/helpers/git/changesCount';
-import {gitStagedCount} from '../app/helpers/git/stagedCount';
-import {gitAddAll} from '../app/helpers/git/addAll';
-import {gitCommit} from '../app/helpers/git/commit';
-import {gitPush} from '../app/helpers/git/push';
+import {changesCount, commit, indexAll, push, stagedCount} from '@pierred/node-git';
 
 jest.mock('tricolors', () => ({
   redLog: jest.fn().mockReturnValue(true),
@@ -23,21 +19,14 @@ jest.mock('../app/helpers/core/fields', () => ({
     fieldsNames: ['foo'],
   })),
 }));
-jest.mock('../app/helpers/git/commit', () => ({
-  gitCommit: jest.fn().mockResolvedValue(Promise.resolve()),
+jest.mock('@pierred/node-git', () => ({
+  commit: jest.fn().mockResolvedValue(Promise.resolve()),
+  push: jest.fn().mockResolvedValue(Promise.resolve()),
+  stagedCount: jest.fn().mockResolvedValue(Promise.resolve(0)),
+  changesCount: jest.fn().mockResolvedValue(Promise.resolve(748)),
+  indexAll: jest.fn().mockResolvedValue(Promise.resolve()),
 }));
-jest.mock('../app/helpers/git/push', () => ({
-  gitPush: jest.fn().mockResolvedValue(Promise.resolve()),
-}));
-jest.mock('../app/helpers/git/stagedCount', () => ({
-  gitStagedCount: jest.fn().mockResolvedValue(Promise.resolve(0)),
-}));
-jest.mock('../app/helpers/git/changesCount', () => ({
-  gitChangesCount: jest.fn().mockResolvedValue(Promise.resolve(748)),
-}));
-jest.mock('../app/helpers/git/addAll', () => ({
-  gitAddAll: jest.fn().mockResolvedValue(Promise.resolve()),
-}));
+
 describe('Commity', () => {
   const commity = new Commity({hasOption: (opt: string, alias: string) => true} as Iclargs, {} as Conf);
 
@@ -70,28 +59,18 @@ describe('Commity', () => {
     expect(commity.changesCount).toEqual(748);
   });
 
-  it('should check changes count', async () => {
-    (gitChangesCount as any).mockResolvedValue(Promise.resolve(0));
-    spyOn(tricolors, 'redLog').and.callFake(() => {});
-    spyOn(process, 'exit').and.callFake(() => {});
-    await commity.checkChangesCount();
-    expect(commity.changesCount).toEqual(0);
-    expect(tricolors.redLog).toHaveBeenCalledWith('No changes detected, cannot commit.');
-  });
-
   it('check changes count should throw', async () => {
-    (gitChangesCount as any).mockResolvedValue(Promise.reject(new Error('Fake Error')));
-    spyOn(tricolors, 'redLog').and.callFake(() => {});
-    spyOn(process, 'exit').and.callFake(() => {});
+    commity.changesCount = 0;
+    (changesCount as any).mockResolvedValue(Promise.reject(new Error('fake error')));
     commity.checkChangesCount().catch((e) => {
       expect(commity.changesCount).toEqual(0);
-      expect(tricolors.redLog).toHaveBeenCalledWith('Error while count changes, cannot commit. Fake Error');
+      expect(e.message).toEqual('fake error');
     });
   });
 
   it('should handle add all option', async () => {
-    (gitStagedCount as any).mockResolvedValue(Promise.resolve(1));
-    (gitAddAll as any).mockResolvedValue(Promise.resolve());
+    (stagedCount as any).mockResolvedValue(Promise.resolve(1));
+    (indexAll as any).mockResolvedValue(Promise.resolve());
     process.argv = ['1', '1', '--addAll'];
     commity.changesCount = 5;
     spyOn(tricolors, 'greenLog');
@@ -100,11 +79,9 @@ describe('Commity', () => {
   });
 
   it('handle add all option should throw', () => {
-    (gitAddAll as any).mockResolvedValue(Promise.reject(new Error('fake error')));
-    spyOn(tricolors, 'redLog');
+    (indexAll as any).mockResolvedValue(Promise.reject(new Error('fake error')));
     commity.handleAddAllOption().catch((e) => {
-      expect(e).toEqual('fake error');
-      expect(tricolors.redLog).toHaveBeenCalledOnceWith(e);
+      expect(e.message).toEqual('fake error');
     });
   });
 
@@ -113,9 +90,13 @@ describe('Commity', () => {
     spyOn(commity.clargs, 'hasOption').and.callFake(() => false);
     spyOn(process, 'exit').and.callFake(() => {});
     commity.stagedCount = 0;
-    spyOn(tricolors, 'redLog');
-    commity.checkStagedCount();
-    expect(tricolors.redLog).toHaveBeenCalledWith('Are you sure there are staged changes to commit ?');
+    try {
+      commity.checkStagedCount();
+    } catch (e) {
+      if (e instanceof Error) {
+        expect(e.message).toEqual('Are you sure there are staged changes to commit ?');
+      }
+    }
   });
 
   it('should get fields', async () => {
@@ -130,27 +111,17 @@ describe('Commity', () => {
 
   it('get fields should throw', () => {
     (fields as any).mockResolvedValue(Promise.reject(new Error('fake error')));
-    spyOn(tricolors, 'redLog');
     spyOn(process, 'exit').and.callFake(() => {});
     commity.getFields().catch((e) => {
-      expect(e).toEqual('fake error');
-      expect(tricolors.redLog).toHaveBeenCalledWith(e);
+      expect(e.message).toEqual('fake error');
     });
   });
 
-  it('commit should not throw', async () => {
-    spyOn(tricolors, 'redLog');
-    await commity.commit('fake');
-    expect(tricolors.redLog).not.toHaveBeenCalled();
-  });
-
   it('commit should throw', () => {
-    (gitCommit as any).mockResolvedValue(Promise.reject(new Error('fake error')));
-    spyOn(tricolors, 'redLog');
+    (commit as any).mockResolvedValue(Promise.reject(new Error('fake error')));
     spyOn(process, 'exit').and.callFake(() => {});
     commity.commit('fake').catch((e) => {
-      expect(e).toEqual('fake error');
-      expect(tricolors.redLog).toHaveBeenCalledWith(e);
+      expect(e.message).toEqual('fake error');
     });
   });
 
@@ -162,12 +133,10 @@ describe('Commity', () => {
   });
 
   it('handle push option should throw', () => {
-    (gitPush as any).mockResolvedValue(Promise.reject(new Error('fake error')));
-    spyOn(tricolors, 'redLog');
+    (push as any).mockResolvedValue(Promise.reject(new Error('fake error')));
     spyOn(process, 'exit').and.callFake(() => {});
     commity.handlePushOption().catch((e) => {
-      expect(e).toEqual('fake error');
-      expect(tricolors.redLog).toHaveBeenCalledWith(e);
+      expect(e.message).toEqual('fake error');
     });
   });
 });

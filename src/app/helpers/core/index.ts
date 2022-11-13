@@ -1,7 +1,7 @@
 import {
   fields,
   Fields,
-} from './fields';
+} from './fields.js';
 
 export {
   fields,

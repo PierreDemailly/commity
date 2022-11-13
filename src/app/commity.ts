@@ -1,8 +1,8 @@
 import tricolors from 'tricolors';
 import nezbold from 'nezbold';
 import {Iclargs} from '@clinjs/clargs';
-import {gitAddAll, gitChangesCount, gitCommit, gitPush, gitStagedCount, fields, Fields} from './helpers';
-import {Conf} from './app';
+import {fields, Fields} from './helpers/index.js';
+import {Conf} from './app.js';
 
 export class Commity {
   clargs: Iclargs;
@@ -25,6 +25,7 @@ export class Commity {
     await this.getFields();
 
     const render = this.conf.render;
+    console.log('conf', this.conf);
     const values = this.result.values;
     const hasOwn = Object.prototype.hasOwnProperty;
     const commitMsg = render.replace(
@@ -51,35 +52,34 @@ export class Commity {
   }
 
   async checkChangesCount(): Promise<void> {
+    const {changesCount} = await import('@pierred/node-git');
     try {
-      this.changesCount = await gitChangesCount();
+      this.changesCount = await changesCount();
       if (this.changesCount < 1) {
-        tricolors.redLog('No changes detected, cannot commit.');
-        process.exit();
+        throw new Error('No changes detected, cannot commit');
       }
     } catch (e) {
-      tricolors.redLog('Error while count changes, cannot commit. ' + e);
-      process.exit();
+      throw e;
     }
   }
 
   async handleAddAllOption(): Promise<void> {
-    this.stagedCount = await gitStagedCount();
+    const {indexAll, stagedCount} = await import('@pierred/node-git');
+    this.stagedCount = await stagedCount();
     if (this.clargs.hasOption('addAll', 'a') && (this.changesCount - this.stagedCount) > 0) {
       try {
-        await gitAddAll();
+        await indexAll({omitNewFiles: false});
         tricolors.greenLog('Added ' + (this.changesCount - this.stagedCount) + ' files to staged changes \r\n');
         this.stagedCount += this.changesCount - this.stagedCount;
       } catch (e) {
-        tricolors.redLog(e);
+        throw e;
       }
     }
   }
 
   checkStagedCount(): void {
     if (this.stagedCount === 0 && !this.clargs.hasOption('addAll', 'a')) {
-      tricolors.redLog('Are you sure there are staged changes to commit ?');
-      process.exit();
+      throw new Error('Are you sure there are staged changes to commit ?');
     }
   }
 
@@ -87,27 +87,27 @@ export class Commity {
     try {
       this.result = await fields();
     } catch (e) {
-      tricolors.redLog(e);
-      process.exit();
+      throw e;
     }
   }
 
   async commit(msg: string): Promise<void> {
+    const {commit} = await import('@pierred/node-git');
     try {
-      await gitCommit(msg);
+      await commit(msg);
     } catch (e) {
-      tricolors.redLog(e);
-      process.exit();
+      throw e;
     }
   }
 
   async handlePushOption(): Promise<void> {
     if (this.clargs.hasOption('push', 'p')) {
+      const {push} = await import('@pierred/node-git');
       try {
-        await gitPush();
+        await push();
         this.finalMsg += '\r\n' + nezbold.bold('Pushed commited changes');
       } catch (e) {
-        tricolors.redLog(e);
+        throw e;
       }
     }
   }

@@ -1,4 +1,3 @@
-import {Fields, fields} from './core';
-import {gitAddAll, gitChangesCount, gitCommit, gitPush, gitStagedCount} from './git';
+import {Fields, fields} from './core/index.js';
 
-export {gitAddAll, gitChangesCount, gitCommit, gitPush, gitStagedCount, fields, Fields};
+export {fields, Fields};

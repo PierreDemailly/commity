@@ -6,9 +6,9 @@ export interface Conf extends SetupOptions {
 import tricolors from 'tricolors';
 import fs from 'fs';
 import clargs, {Iclargs, SetupOptions} from '@clinjs/clargs';
-import {Commity} from './commity';
+import {Commity} from './commity.js';
 import {join} from 'path';
-import {InitCommandHandler} from './commands/init';
+import {InitCommandHandler} from './commands/init.js';
 
 export class App {
   conf: Conf | undefined;
@@ -26,7 +26,7 @@ export class App {
       try {
         await initCommandHandler.run();
       } catch (e) {
-        throw new Error(e);
+        throw e;
       }
 
       return;
@@ -39,14 +39,18 @@ export class App {
     try {
       await commity.run();
     } catch (e) {
-      throw new Error(e);
+      throw e;
     }
   }
 
   async isCommityFriendly(): Promise<void> {
     try {
-      this.conf = await import(join(process.cwd(), 'commity.json'));
+      const { default: { fields, render } } = await import(join(process.cwd(), 'commity.json'), {
+        assert: { type: 'json' }
+      });
+      this.conf = { fields, render } as any;
     } catch (error) {
+      console.log(error);
       tricolors.redLog('Commity is not initialized. Please run "commity init" to init your workspace.');
       process.exit();
     }

@@ -1,7 +1,7 @@
 import inquirer from 'inquirer';
 import fs from 'fs';
 import tricolors from 'tricolors';
-import commity from '../../commity.json';
+import commity from '../../commity.json' assert { type: 'json' };
 import {Iclargs} from '@clinjs/clargs';
 
 export class InitCommandHandler {
@@ -26,7 +26,7 @@ export class InitCommandHandler {
             message: 'file commity.json already exists, overwrite ?',
           });
         } catch (error) {
-          throw new Error(error);
+          throw error;
         }
         if (!overwriteResult.overwrite) {
           return;

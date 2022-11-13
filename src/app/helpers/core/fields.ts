@@ -1,4 +1,5 @@
 import inquirer from 'inquirer';
+import { join } from 'node:path';
 
 interface FieldValue {
   [string: string]: string | object;
@@ -12,9 +13,10 @@ export interface Fields {
 
 export const fields = (): Promise<Fields> => {
   return new Promise(async (resolve, reject) => {
-    const conf = require(process.cwd() + '/commity.json');
+    const { default : { fields} } = await import(join(process.cwd(), 'commity.json'), {
+      assert: { type: 'json' }
+    });
     const inquirerPrompts = [];
-    const fields = conf.fields;
     const fieldsNames = [];
     for (const field in fields) {
       const fieldName = Object.keys(fields[field]).join();
