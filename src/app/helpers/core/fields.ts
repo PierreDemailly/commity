@@ -13,7 +13,7 @@ export interface Fields {
 
 export const fields = (): Promise<Fields> => {
   return new Promise(async (resolve, reject) => {
-    const {fields} = require(process.cwd() + '/commity.json');
+    const {fields} = await import(join(process.cwd(), 'commity.json'), { assert: {type: 'json'}});
     const inquirerPrompts = [];
     const fieldsNames = [];
     for (const field in fields) {

@@ -31,13 +31,21 @@ export class App {
 
     const commity = new Commity(clargs as Iclargs, this.conf as Conf);
 
-    await commity.run();
+    try {
+      await commity.run();
+    } catch (error) {
+      if (error instanceof Error) {
+        tricolors.redLog(error.message);
+        return;
+      }
+    }
   }
 
   async isCommityFriendly(): Promise<void> {
     try {
-      this.conf = this.conf = await import(join(process.cwd(), 'commity.json'));
+      this.conf = await import(join(process.cwd(), 'commity.json'), { assert: {type: 'json'}});
     } catch (error) {
+      console.log(error);
       tricolors.redLog('Commity is not initialized. Please run "commity init" to init your workspace.');
       process.exit();
     }
