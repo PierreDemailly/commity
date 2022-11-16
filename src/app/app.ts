@@ -45,12 +45,8 @@ export class App {
 
   async isCommityFriendly(): Promise<void> {
     try {
-      const { default: { fields, render } } = await import(join(process.cwd(), 'commity.json'), {
-        assert: { type: 'json' }
-      });
-      this.conf = { fields, render } as any;
+      this.conf = this.conf = await import(join(process.cwd(), 'commity.json'));
     } catch (error) {
-      console.log(error);
       tricolors.redLog('Commity is not initialized. Please run "commity init" to init your workspace.');
       process.exit();
     }

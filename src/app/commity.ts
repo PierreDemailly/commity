@@ -25,7 +25,6 @@ export class Commity {
     await this.getFields();
 
     const render = this.conf.render;
-    console.log('conf', this.conf);
     const values = this.result.values;
     const hasOwn = Object.prototype.hasOwnProperty;
     const commitMsg = render.replace(
