@@ -22,12 +22,7 @@ export class App {
 
     if (clargs.commandUsed('init')) {
       const initCommandHandler = new InitCommandHandler(clargs as Iclargs);
-
-      try {
-        await initCommandHandler.run();
-      } catch (e) {
-        throw e;
-      }
+      await initCommandHandler.run();
 
       return;
     }
@@ -36,11 +31,7 @@ export class App {
 
     const commity = new Commity(clargs as Iclargs, this.conf as Conf);
 
-    try {
-      await commity.run();
-    } catch (e) {
-      throw e;
-    }
+    await commity.run();
   }
 
   async isCommityFriendly(): Promise<void> {

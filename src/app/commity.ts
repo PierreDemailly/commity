@@ -22,7 +22,7 @@ export class Commity {
     await this.checkChangesCount();
     await this.handleAddAllOption();
     this.checkStagedCount();
-    await this.getFields();
+    this.result = await fields();
 
     const render = this.conf.render;
     const values = this.result.values;
@@ -52,13 +52,9 @@ export class Commity {
 
   async checkChangesCount(): Promise<void> {
     const {changesCount} = await import('@pierred/node-git');
-    try {
-      this.changesCount = await changesCount();
-      if (this.changesCount < 1) {
-        throw new Error('No changes detected, cannot commit');
-      }
-    } catch (e) {
-      throw e;
+    this.changesCount = await changesCount();
+    if (this.changesCount < 1) {
+      throw new Error('No changes detected, cannot commit');
     }
   }
 
@@ -66,13 +62,9 @@ export class Commity {
     const {indexAll, stagedCount} = await import('@pierred/node-git');
     this.stagedCount = await stagedCount();
     if (this.clargs.hasOption('addAll', 'a') && (this.changesCount - this.stagedCount) > 0) {
-      try {
-        await indexAll({omitNewFiles: false});
-        tricolors.greenLog('Added ' + (this.changesCount - this.stagedCount) + ' files to staged changes \r\n');
-        this.stagedCount += this.changesCount - this.stagedCount;
-      } catch (e) {
-        throw e;
-      }
+      await indexAll({omitNewFiles: false});
+      tricolors.greenLog('Added ' + (this.changesCount - this.stagedCount) + ' files to staged changes \r\n');
+      this.stagedCount += this.changesCount - this.stagedCount;
     }
   }
 
@@ -82,32 +74,16 @@ export class Commity {
     }
   }
 
-  async getFields(): Promise<void> {
-    try {
-      this.result = await fields();
-    } catch (e) {
-      throw e;
-    }
-  }
-
   async commit(msg: string): Promise<void> {
     const {commit} = await import('@pierred/node-git');
-    try {
-      await commit(msg);
-    } catch (e) {
-      throw e;
-    }
+    await commit(msg);
   }
 
   async handlePushOption(): Promise<void> {
     if (this.clargs.hasOption('push', 'p')) {
       const {push} = await import('@pierred/node-git');
-      try {
-        await push();
-        this.finalMsg += '\r\n' + nezbold.bold('Pushed commited changes');
-      } catch (e) {
-        throw e;
-      }
+      await push();
+      this.finalMsg += '\r\n' + nezbold.bold('Pushed commited changes');
     }
   }
 }

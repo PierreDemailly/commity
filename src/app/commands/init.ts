@@ -18,16 +18,11 @@ export class InitCommandHandler {
     this.commityFileExist = await this.fileExist(path);
     if (this.commityFileExist) {
       if (!this.clargs.hasOption('overwrite', 'o')) {
-        let overwriteResult;
-        try {
-          overwriteResult = await inquirer.prompt({
-            name: 'overwrite',
-            type: 'confirm',
-            message: 'file commity.json already exists, overwrite ?',
-          });
-        } catch (error) {
-          throw error;
-        }
+        const overwriteResult = await inquirer.prompt({
+          name: 'overwrite',
+          type: 'confirm',
+          message: 'file commity.json already exists, overwrite ?',
+        });
         if (!overwriteResult.overwrite) {
           return;
         }
