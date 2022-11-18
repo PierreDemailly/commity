@@ -24,7 +24,8 @@ npm i -D @pierred/commity
 
 ## Get started
 
-> **warn** If your git diff tree is not clean, you may not want to use `-a` (`--addAll`) option.
+> **Warning**
+> If your git diff tree is not clean, you may not want to use `-a` (`--addAll`) option.
 
 ```shell
 npm i -g @pierred/commity
@@ -42,7 +43,9 @@ npx commity -a
 
 ## `commity ìnit <options>` 
 Create a new `commity.json` configuration file.
-> **note** If a configuration file already exists, you can reset the configuration file via rich-interaction.
+
+> **Note**
+If a configuration file already exists, you can reset the configuration file via rich-interaction.
 
 ### `--overwrite` alias `-o` (works with `init`)
 
@@ -55,7 +58,8 @@ Add all changes to the index (`git add --all`) before commit.
 
 ### `--push` alias `-p`
 Push to remote after commit.
-> **note** If cannot push e.g. because your branch has no upstream branch, commity will be able to commit anyway.
+> **Note**
+> If cannot push e.g. because your branch has no upstream branch, commity will be able to commit anyway.
 
 ### `--help` alias `-h`
 Return usage informations.
