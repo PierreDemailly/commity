@@ -15,7 +15,7 @@ export interface Conf extends SetupOptions {
 const kConfigFilepath = `${process.cwd()}/commity.json`;
 
 export class App {
-  conf: Conf | undefined;
+  #conf: Conf | undefined;
 
   async initialize(): Promise<void> {
     await this.#isGitInitialized();
@@ -30,7 +30,7 @@ export class App {
 
     await this.#getUserConfig();
 
-    const commity = new Commity(clargs as Iclargs, this.conf as Conf);
+    const commity = new Commity(clargs as Iclargs, this.#conf as Conf);
 
     try {
       await commity.run();
@@ -48,7 +48,7 @@ export class App {
     try {
       const fh = await open(kConfigFilepath);
       const content = await fh.readFile("utf-8");
-      this.conf = JSON.parse(content);
+      this.#conf = JSON.parse(content);
       await fh.close();
     }
     catch (error: any) {
