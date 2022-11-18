@@ -1,95 +1,108 @@
+import { join } from "node:path";
+import { open } from "node:fs/promises";
+
+import clargs, { Iclargs, SetupOptions } from "@clinjs/clargs";
+import tricolors from "tricolors";
+
+import { InitCommandHandler } from "./commands/init.js";
+import { Commity } from "./commity.js";
+
 export interface Conf extends SetupOptions {
   render: string;
-  fields: any[];
+  chunks: any[];
 }
 
-import tricolors from 'tricolors';
-import fs from 'fs';
-import clargs, {Iclargs, SetupOptions} from '@clinjs/clargs';
-import {Commity} from './commity.js';
-import {join} from 'path';
-import {InitCommandHandler} from './commands/init.js';
+const kConfigFilepath = `${process.cwd()}/commity.json`;
 
 export class App {
   conf: Conf | undefined;
 
-  constructor() {
-  }
-
   async initialize(): Promise<void> {
-    await this.isGitInitialized();
-    this.setupParser();
+    await this.#isGitInitialized();
+    this.#setupParser();
 
-    if (clargs.commandUsed('init')) {
+    if (clargs.commandUsed("init")) {
       const initCommandHandler = new InitCommandHandler(clargs as Iclargs);
       await initCommandHandler.run();
 
       return;
     }
 
-    await this.isCommityFriendly();
+    await this.#getUserConfig();
 
     const commity = new Commity(clargs as Iclargs, this.conf as Conf);
 
     try {
       await commity.run();
-    } catch (error) {
+    }
+    catch (error) {
       if (error instanceof Error) {
         tricolors.redLog(error.message);
+
         return;
       }
     }
   }
 
-  async isCommityFriendly(): Promise<void> {
+  async #getUserConfig(): Promise<void> {
     try {
-      this.conf = await import(join(process.cwd(), 'commity.json'), { assert: {type: 'json'}});
-    } catch (error) {
-      console.log(error);
-      tricolors.redLog('Commity is not initialized. Please run "commity init" to init your workspace.');
-      process.exit();
+      const fh = await open(kConfigFilepath);
+      const content = await fh.readFile("utf-8");
+      this.conf = JSON.parse(content);
+      await fh.close();
+    }
+    catch (error: any) {
+      if (error?.code === "ENOENT") {
+        tricolors.redLog("Commity is not initialized. Please run \"commity init\" to init your workspace.");
+        process.exit();
+      }
+
+      throw error;
     }
   }
 
-  async isGitInitialized(): Promise<void> {
+  async #isGitInitialized(): Promise<void> {
     try {
-      const path = join(process.cwd(), '/.git');
-      await fs.promises.access(path, fs.constants.F_OK);
+      const path = join(process.cwd(), "/.git");
+      const fh = await open(path);
+      await fh.close();
+
       return;
-    } catch (error) {
-      tricolors.redLog('Current directory is not a Git repository.');
+    }
+    catch (error) {
+      tricolors.redLog("Current directory is not a Git repository.");
       process.exit();
     }
   }
 
-  setupParser(): void {
+  #setupParser(): void {
     clargs.setup({
-      usage: 'commity <command> <options>',
+      usage: "commity <command> <options>",
       options: [
         {
-          name: '--push',
-          alias: '-p',
-          description: 'push changes to current remote branch after commiting',
+          name: "--push",
+          alias: "-p",
+          description: "push changes to current remote branch after commiting"
         },
         {
-          name: '--addAll',
-          alias: '-a',
-          description: 'add all staged changes before commiting',
-        },
+          name: "--addAll",
+          alias: "-a",
+          description: "add all staged changes before commiting"
+        }
       ],
       commands: [
         {
-          name: 'init',
-          description: 'inititialize Commity',
+          name: "init",
+          description: "inititialize Commity",
           options: [
             {
-              name: '--overwrite',
-              alias: '-o',
-              description: 'overwrite existing commity.json (if exists)',
-            },
-          ],
-        },
-      ],
+              name: "--overwrite",
+              alias: "-o",
+              description: "overwrite existing commity.json (if exists)"
+            }
+          ]
+        }
+      ]
     });
     clargs.parse();
   }
