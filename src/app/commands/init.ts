@@ -4,15 +4,19 @@ import { Iclargs } from "@clinjs/clargs";
 import inquirer from "inquirer";
 import tricolors from "tricolors";
 
-import commity from "../../commity.json" assert { type: 'json' };
+import { Conf } from "../app.js";
 
 const kConfigFilepath = `${process.cwd()}/commity.json`;
+const kDefaultConfigPath = new URL("../../commity.json", import.meta.url);
 
 export class InitCommandHandler {
-  #clargs: Iclargs
+  #clargs: Iclargs;
+  #defaultConfig!: Conf;
 
   constructor(clargs: Iclargs) {
     this.#clargs = clargs;
+
+    this.#getDefaultConfig();
   }
 
   async run(): Promise<void> {
@@ -26,10 +30,17 @@ export class InitCommandHandler {
     await this.#generateConfigFile();
   }
 
+  async #getDefaultConfig() {
+    const fh = await open(kDefaultConfigPath, "r");
+    const content = await fh.readFile("utf-8");
+    this.#defaultConfig = JSON.parse(content);
+    await fh.close();
+  }
+
   async #generateConfigFile() {
     try {
       const fh = await open(kConfigFilepath, "wx");
-      await fh.write(JSON.stringify(commity, null, 2));
+      await fh.write(JSON.stringify(this.#defaultConfig, null, 2));
       await fh.close();
     }
     catch (e) {
@@ -58,7 +69,7 @@ export class InitCommandHandler {
 
     try {
       const fh = await open(kConfigFilepath, "r+");
-      await fh.write(JSON.stringify(commity, null, 2));
+      await fh.write(JSON.stringify(this.#defaultConfig, null, 2));
       await fh.close();
     }
     catch (e) {

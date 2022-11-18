@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
+    "target": "ES6",
     "moduleResolution": "NodeNext",
     "module": "NodeNext",
     "declaration": true,
@@ -19,5 +19,9 @@
     "dist/**/*",
     "coverage/**/*",
     "vite.config.ts"
+  ],
+  "include": [
+    "src/**/*.ts",
+    "src/commity.json"
   ]
 }
