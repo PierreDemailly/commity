@@ -56,8 +56,6 @@ export class InitCommandHandler {
     }
 
     tricolors.greenLog(`Created ${process.cwd()}/commity.json`);
-
-    return;
   }
 
   async #resetConfigFile() {
@@ -85,8 +83,6 @@ export class InitCommandHandler {
     }
 
     tricolors.greenLog(`Updated ${process.cwd()}/commity.json`);
-
-    return;
   }
 
   async #configFileExists(): Promise<boolean> {

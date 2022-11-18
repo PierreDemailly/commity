@@ -45,11 +45,11 @@ export class Commity {
         return prefix + chunkValue;
       })() : whole)
     );
-
     await this.#commit(commitMsg);
     await this.#handlePushOption();
 
-    this.#finalMsg += `${tricolors.green(`Commited ${this.#stagedCount} files.`)} ${nezbold.bold(commitMsg)}`;
+    const infoMsg = `Commited ${this.#stagedCount} files.`;
+    this.#finalMsg += `${tricolors.green(infoMsg)} ${nezbold.bold(commitMsg)}`;
 
     console.log(this.#finalMsg);
     process.exit();
