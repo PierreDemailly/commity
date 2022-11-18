@@ -38,7 +38,7 @@ vi.mock("node:fs/promises", () => {
 });
 
 
-describe("get a list of todo items", () => {
+describe("InitCommandHandler", () => {
   clargs.setup({
     usage: "commity <command> <options>",
     options: [],

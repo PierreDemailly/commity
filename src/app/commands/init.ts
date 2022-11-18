@@ -15,7 +15,6 @@ export class InitCommandHandler {
 
   constructor(clargs: Iclargs) {
     this.#clargs = clargs;
-
     this.#getDefaultConfig();
   }
 
@@ -31,10 +30,17 @@ export class InitCommandHandler {
   }
 
   async #getDefaultConfig() {
-    const fh = await open(kDefaultConfigPath, "r");
-    const content = await fh.readFile("utf-8");
-    this.#defaultConfig = JSON.parse(content);
-    await fh.close();
+    try {
+      const fh = await open(kDefaultConfigPath, "r");
+      const content = await fh.readFile("utf-8");
+      this.#defaultConfig = JSON.parse(content);
+      await fh.close();
+    }
+    catch (error: any) {
+      if (error?.code === "EPERM") {
+        throw error;
+      }
+    }
   }
 
   async #generateConfigFile() {
