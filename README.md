@@ -1,8 +1,5 @@
 # [Commity](http://commity.online/#/)
 
-
-[![Build status](https://travis-ci.org/PierreDemailly/commity.svg?branch=develop)](https://travis-ci.org/PierreDemailly/commity)
-
 **Commity** is a command line tool that will help you with commits conventions.
 You can configure Commity fast & easily so every collaborators can follow the commit convention you need.
 
