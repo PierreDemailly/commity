@@ -33,7 +33,6 @@ export class InitCommandHandler {
       await fh.close();
     }
     catch (e) {
-      console.log(e);
       tricolors.redLog(`Could not create ${process.cwd()}/commity.json`);
 
       return;
