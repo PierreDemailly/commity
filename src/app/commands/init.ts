@@ -88,8 +88,12 @@ export class InitCommandHandler {
       const fh = await open(kConfigFilepath, "r");
       await fh.close();
     }
-    catch (error) {
-      return false;
+    catch (error: any) {
+      if (error?.code === "ENOENT") {
+        return false;
+      }
+
+      throw error;
     }
 
     return true;
