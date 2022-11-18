@@ -1,70 +1,103 @@
-import inquirer from 'inquirer';
-import fs from 'fs';
-import tricolors from 'tricolors';
-import commity from '../../commity.json';
-import {Iclargs} from '@clinjs/clargs';
+import { open } from "node:fs/promises";
+
+import { Iclargs } from "@clinjs/clargs";
+import inquirer from "inquirer";
+import tricolors from "tricolors";
+
+import { Conf } from "../app.js";
+
+const kConfigFilepath = `${process.cwd()}/commity.json`;
+const kDefaultConfigPath = new URL("../../commity.json", import.meta.url);
 
 export class InitCommandHandler {
-  clargs: Iclargs
-  commityFileExist = false;
+  #clargs: Iclargs;
+  #defaultConfig!: Conf;
 
   constructor(clargs: Iclargs) {
-    this.clargs = clargs;
+    this.#clargs = clargs;
+    this.#getDefaultConfig();
   }
 
   async run(): Promise<void> {
-    const path = `${process.cwd()}/commity.json`;
+    const configFileExists = await this.#configFileExists();
+    if (configFileExists) {
+      await this.#resetConfigFile();
 
-    this.commityFileExist = await this.fileExist(path);
-    if (this.commityFileExist) {
-      if (!this.clargs.hasOption('overwrite', 'o')) {
-        let overwriteResult;
-        try {
-          overwriteResult = await inquirer.prompt({
-            name: 'overwrite',
-            type: 'confirm',
-            message: 'file commity.json already exists, overwrite ?',
-          });
-        } catch (error) {
-          throw new Error(error);
-        }
-        if (!overwriteResult.overwrite) {
-          return;
-        }
+      return;
+    }
+
+    await this.#generateConfigFile();
+  }
+
+  async #getDefaultConfig() {
+    try {
+      const fh = await open(kDefaultConfigPath, "r");
+      const content = await fh.readFile("utf-8");
+      this.#defaultConfig = JSON.parse(content);
+      await fh.close();
+    }
+    catch (error: any) {
+      if (error?.code === "EPERM") {
+        throw error;
       }
-      try {
-        await this.createJson(path, commity);
-        tricolors.greenLog(`Updated ${process.cwd()}/commity.json`);
-      } catch (error) {
-        tricolors.redLog(`Could not update ${process.cwd()}/commity.json`);
-      } finally {
-        process.exit();
+    }
+  }
+
+  async #generateConfigFile() {
+    try {
+      const fh = await open(kConfigFilepath, "wx");
+      await fh.write(JSON.stringify(this.#defaultConfig, null, 2));
+      await fh.close();
+    }
+    catch (e) {
+      tricolors.redLog(`Could not create ${process.cwd()}/commity.json`);
+
+      return;
+    }
+
+    tricolors.greenLog(`Created ${process.cwd()}/commity.json`);
+  }
+
+  async #resetConfigFile() {
+    if (!this.#clargs.hasOption("overwrite", "o")) {
+      const prompt = await inquirer.prompt({
+        name: "confirm",
+        type: "confirm",
+        message: "A config file already exists in the cwd, reset?"
+      });
+
+      if (!prompt.confirm) {
+        return;
       }
     }
 
     try {
-      await this.createJson(path, commity);
-      tricolors.greenLog(`Created ${process.cwd()}/commity.json`);
-    } catch (error) {
-      tricolors.redLog(`Could not create ${process.cwd()}/commity.json`);
-    } finally {
-      process.exit();
+      const fh = await open(kConfigFilepath, "r+");
+      await fh.write(JSON.stringify(this.#defaultConfig, null, 2));
+      await fh.close();
     }
-  };
+    catch (e) {
+      tricolors.redLog(`Could not update ${process.cwd()}/commity.json`);
 
-  async createJson(path: string, json: object): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      fs.writeFile(path, JSON.stringify(json, null, 2), (err) => {
-        resolve(!!!err);
-      });
-    });
+      return;
+    }
+
+    tricolors.greenLog(`Updated ${process.cwd()}/commity.json`);
   }
 
-  async fileExist(path: string): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      fs.access(path, fs.constants.F_OK, (err) => {
-        resolve(!!!err);
-      });
-    });
+  async #configFileExists(): Promise<boolean> {
+    try {
+      const fh = await open(kConfigFilepath, "r");
+      await fh.close();
+    }
+    catch (error: any) {
+      if (error?.code === "ENOENT") {
+        return false;
+      }
+
+      throw error;
+    }
+
+    return true;
   }
 }

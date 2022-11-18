@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
+    "target": "ES6",
+    "moduleResolution": "NodeNext",
+    "module": "NodeNext",
     "declaration": true,
     "outDir": "./dist",
     "rootDir": "./src",
@@ -17,6 +18,10 @@
     "src/spec/*",
     "dist/**/*",
     "coverage/**/*",
-    "jest.config.js"
+    "vite.config.ts"
+  ],
+  "include": [
+    "src/**/*.ts",
+    "src/commity.json"
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "fields": [
+  "chunks": [
     {
       "scope": {
         "label": "Select the type of change that you're committing",
