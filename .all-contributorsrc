@@ -1,0 +1,34 @@
+{
+  "projectName": "commity",
+  "projectOwner": "PierreDemailly",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitConvention": "none",
+  "contributors": [
+    {
+      "login": "PierreDemailly",
+      "name": "PierreDemailly",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39910767?v=4",
+      "profile": "https://github.com/PierreDemailly",
+      "contributions": [
+        "code", "doc", "test"
+      ]
+    },
+    {
+      "login": "SofianD",
+      "name": "Yefis",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39944043?v=4",
+      "profile": "https://github.com/SofianD",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 2,
+  "linkToUsage": false
+}
