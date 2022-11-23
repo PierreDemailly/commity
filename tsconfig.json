@@ -15,7 +15,7 @@
     "allowJs": true,
   },
   "exclude": [
-    "src/spec/*",
+    "src/test/*",
     "dist/**/*",
     "coverage/**/*",
     "vite.config.ts"
