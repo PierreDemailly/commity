@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+# 2.0.0
+
+## What's Changed
+* chore: remove travis by @PierreDemailly in https://github.com/PierreDemailly/commity/pull/56
+* feat #52: replace custom git helpers with node-git by @PierreDemailly in https://github.com/PierreDemailly/commity/pull/54
+* chore: improve readme by @PierreDemailly in https://github.com/PierreDemailly/commity/pull/57
+* [ImgBot] Optimize images by @imgbot in https://github.com/PierreDemailly/commity/pull/58
+* feat: add  all-contributors by @PierreDemailly in https://github.com/PierreDemailly/commity/pull/59
+
 # 1.7.0
 
 + feat decorations and optionnal rendering
