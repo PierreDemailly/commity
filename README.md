@@ -6,7 +6,7 @@
 **Commity** is a command line tool that will help you with commits conventions.
 You can configure Commity fast & easily so every collaborators can follow the commit convention you need.
 
-<img src="./public/usage.png" width="681" alt="usage screenshot">
+<img src="./public/usage.png" width="680" alt="usage screenshot">
 
 ## Requirement
 
