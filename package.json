@@ -28,7 +28,7 @@
   "license": "ISC",
   "dependencies": {
     "@clinjs/clargs": "^1.0.2",
-    "@pierred/node-git": "^0.1.2-beta.1",
+    "@pierred/node-git": "^1.0.1",
     "inquirer": "^7.3.3",
     "nezbold": "^1.2.1",
     "tricolors": "^1.5.4"
