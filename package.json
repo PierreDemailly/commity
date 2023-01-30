@@ -29,13 +29,13 @@
   "dependencies": {
     "@clinjs/clargs": "^1.0.2",
     "@pierred/node-git": "^1.0.1",
-    "inquirer": "^7.3.3",
+    "inquirer": "^9.1.4",
     "nezbold": "^1.2.1",
     "tricolors": "^1.5.4"
   },
   "devDependencies": {
     "@nodesecure/eslint-config": "^1.5.0",
-    "@types/inquirer": "^7.3.3",
+    "@types/inquirer": "^9.0.3",
     "@types/node": "^18.11.9",
     "@types/promise-fs": "^2.1.2",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
