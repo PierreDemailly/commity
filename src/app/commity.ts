@@ -1,10 +1,12 @@
 import { Iclargs } from "@clinjs/clargs";
-import { indexAll, stagedCount } from "@pierred/node-git";
-import nezbold from "nezbold";
-import tricolors from "tricolors";
+import { indexAll, commit, changesCount, push } from "@pierred/node-git";
+import kleur from "kleur";
+import ansi from "ansi-styles";
 
 import { Conf } from "./app.js";
 import { promptCommitChunks } from "./helpers/core/fields.js";
+
+const kTick = `${ansi.green.open}✔${ansi.green.close}`;
 
 export class Commity {
   #clargs: Iclargs;
@@ -21,11 +23,13 @@ export class Commity {
   async run(): Promise<void> {
     await this.#checkChangesCount();
     await this.#handleAddAllOption();
-    this.#checkStagedCount();
+
+    if (this.#stagedCount === 0 && !this.#clargs.hasOption("addAll", "a")) {
+      throw new Error("Are you sure there are staged changes to commit ?");
+    }
 
     const { chunks, render } = this.#conf;
     const values: Record<string, string> = {};
-
     for await (const value of promptCommitChunks(chunks)) {
       Object.assign(values, value);
     }
@@ -33,30 +37,31 @@ export class Commity {
     const hasOwn = Object.prototype.hasOwnProperty;
     const commitMsg = render.replace(
       /{{\s*([^}]+)\s*}}/g,
-      (whole: any, key: string) => (hasOwn.call(values, key) ? (() => {
-        const chunk = chunks.find((chunk) => chunk[key])[key];
-        const chunkValue = values[key];
-        if (!chunkValue && chunk.required === false) {
-          return "";
-        }
+      (whole: string, key: string) => (hasOwn.call(values, key)
+        ? (() => {
+          const chunk = chunks[key];
+          const chunkValue = values[key];
+          if (!chunkValue && chunk.required === false) {
+            return "";
+          }
 
-        const prefix = chunk.decorations?.prefix ?? "";
+          const prefix = chunk.decorations?.prefix ?? "";
 
-        return prefix + chunkValue;
-      })() : whole)
+          return prefix + chunkValue;
+        })()
+        : whole)
     );
     await this.#commit(commitMsg);
     await this.#handlePushOption();
 
-    const infoMsg = `Commited ${this.#stagedCount} files.`;
-    this.#finalMsg += `${tricolors.green(infoMsg)} ${nezbold.bold(commitMsg)}`;
+    const infoMsg = `${kTick} Commited ${this.#stagedCount} files.`;
+    this.#finalMsg += `${kleur.green(infoMsg)} ${kleur.blue().bold(commitMsg)}`;
 
     console.log(this.#finalMsg);
     process.exit();
   }
 
   async #checkChangesCount(): Promise<void> {
-    const { changesCount } = await import("@pierred/node-git");
     this.#changesCount = await changesCount();
 
     if (this.#changesCount < 1) {
@@ -65,30 +70,25 @@ export class Commity {
   }
 
   async #handleAddAllOption(): Promise<void> {
-    this.#stagedCount = await stagedCount();
-    if (this.#clargs.hasOption("addAll", "a") && (this.#changesCount - this.#stagedCount) > 0) {
+    if (
+      this.#clargs.hasOption("addAll", "a") &&
+			this.#changesCount - this.#stagedCount > 0
+    ) {
       await indexAll({ omitNewFiles: false });
-      tricolors.greenLog("Added " + (this.#changesCount - this.#stagedCount) + " files to staged changes \r\n");
+      const addedCount = this.#changesCount - this.#stagedCount;
+      console.log(kleur.green(`${kTick} Added ${addedCount} files to staged changes`));
       this.#stagedCount += this.#changesCount - this.#stagedCount;
     }
   }
 
-  #checkStagedCount(): void {
-    if (this.#stagedCount === 0 && !this.#clargs.hasOption("addAll", "a")) {
-      throw new Error("Are you sure there are staged changes to commit ?");
-    }
-  }
-
   async #commit(msg: string): Promise<void> {
-    const { commit } = await import("@pierred/node-git");
-    await commit(msg);
+    await commit(msg, { skipHooks: this.#clargs.hasOption("no-verify", "n") });
   }
 
   async #handlePushOption(): Promise<void> {
     if (this.#clargs.hasOption("push", "p")) {
-      const { push } = await import("@pierred/node-git");
       await push();
-      this.#finalMsg += "\r\n" + nezbold.bold("Pushed commited changes");
+      this.#finalMsg += `${kTick}${kleur.bold("Pushed commited changes")}`;
     }
   }
 }

@@ -1,15 +1,49 @@
-import inquirer from "inquirer";
+import prompts from "prompts";
+import ansi from "ansi-styles";
+import { Chunks } from "../../app.js";
 
-export async function* promptCommitChunks(chunks: any): AsyncGenerator<Record<string, string>, void, unknown> {
+const kTick = `${ansi.green.open}✔${ansi.green.close}`;
+const kPointer = `${ansi.gray.open}›${ansi.gray.close}`;
+
+function clearLastLine() {
+  process.stdout.moveCursor(0, -1);
+  process.stdout.clearLine(0);
+}
+
+export async function* promptCommitChunks(chunks: Chunks): AsyncGenerator<Record<string, string>, void, unknown> {
   for (const chunk in chunks) {
-    const fieldname = Object.keys(chunks[chunk]).join();
-    const fieldObject = chunks[chunk][fieldname];
+    if (!Object.prototype.hasOwnProperty.call(chunks, chunk)) {
+      continue;
+    }
 
-    yield await inquirer.prompt({
-      name: fieldname,
-      type: fieldObject.type === "select" ? "list" : "input",
-      message: fieldObject.label,
-      choices: fieldObject.selectOptions || null
+    const fieldObject = chunks[chunk];
+
+    const { value } = await prompts({
+      name: "value",
+      type: fieldObject.type ?? "text",
+      message: fieldObject.message,
+      choices: fieldObject.choices?.map((choice) => {
+        return { ...choice, title: choice.value };
+      }),
+      validate: () => {
+        if (fieldObject.type !== "select") {
+          clearLastLine();
+        }
+
+        return true;
+      },
+      format: (value) => {
+        if (fieldObject.type === "select") {
+          clearLastLine();
+          clearLastLine();
+
+          console.log(`${kTick} ${fieldObject.message} ${kPointer} ${value.name || value}`);
+        }
+
+        return value;
+      }
     });
+
+    yield { [chunk]: value };
   }
 }

@@ -29,28 +29,30 @@
   "dependencies": {
     "@clinjs/clargs": "^1.0.2",
     "@pierred/node-git": "^1.0.4",
-    "inquirer": "^9.1.5",
-    "nezbold": "^1.2.1",
-    "tricolors": "^1.5.4"
+    "ansi-styles": "^6.2.1",
+    "kleur": "^4.1.5",
+    "prompts": "^2.4.2"
   },
   "devDependencies": {
-    "@nodesecure/eslint-config": "^1.7.0",
-    "@types/inquirer": "^9.0.3",
-    "@types/node": "^18.15.3",
+    "@nodesecure/eslint-config": "^1.6.0",
+    "@types/node": "^18.13.0",
     "@types/promise-fs": "^2.1.2",
-    "@typescript-eslint/eslint-plugin": "^5.56.0",
-    "@typescript-eslint/parser": "^5.56.0",
-    "@vitest/coverage-c8": "^0.29.5",
+    "@types/prompts": "^2.4.2",
+    "@typescript-eslint/eslint-plugin": "^5.51.0",
+    "@typescript-eslint/parser": "^5.51.0",
+    "@vitest/coverage-c8": "^0.28.4",
     "all-contributors-cli": "^6.24.0",
-    "eslint": "^8.36.0",
-    "rimraf": "^4.4.0",
-    "typescript": "^5.0.2",
-    "vitest": "^0.29.5"
+    "eslint": "^8.33.0",
+    "rimraf": "^4.1.2",
+    "typescript": "^4.9.5",
+    "vitest": "^0.28.4"
   },
   "bin": {
     "commity": "./dist/main.js"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "bugs": {
     "url": "https://github.com/PierreDemailly/commity/issues"
   },
