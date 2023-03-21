@@ -1,9 +1,8 @@
 import { open } from "node:fs/promises";
 
 import { Iclargs } from "@clinjs/clargs";
-import inquirer from "inquirer";
-import tricolors from "tricolors";
-
+import prompts from "prompts";
+import kleur from "kleur";
 import { Conf } from "../app.js";
 
 const kConfigFilepath = `${process.cwd()}/commity.json`;
@@ -50,23 +49,24 @@ export class InitCommandHandler {
       await fh.close();
     }
     catch (e) {
-      tricolors.redLog(`Could not create ${process.cwd()}/commity.json`);
+      console.log(kleur.red(`Could not create ${process.cwd()}/commity.json`));
 
       return;
     }
 
-    tricolors.greenLog(`Created ${process.cwd()}/commity.json`);
+    console.log(kleur.green(`Created ${process.cwd()}/commity.json`));
   }
 
   async #resetConfigFile() {
     if (!this.#clargs.hasOption("overwrite", "o")) {
-      const prompt = await inquirer.prompt({
+      const { confirm } = await prompts({
         name: "confirm",
         type: "confirm",
-        message: "A config file already exists in the cwd, reset?"
+        message: "A config file already exists in the cwd, reset?",
+        initial: false
       });
 
-      if (!prompt.confirm) {
+      if (!confirm) {
         return;
       }
     }
@@ -77,12 +77,12 @@ export class InitCommandHandler {
       await fh.close();
     }
     catch (e) {
-      tricolors.redLog(`Could not update ${process.cwd()}/commity.json`);
+      console.log(kleur.red(`Could not update ${process.cwd()}/commity.json`));
 
       return;
     }
 
-    tricolors.greenLog(`Updated ${process.cwd()}/commity.json`);
+    console.log(kleur.red(`Updated ${process.cwd()}/commity.json`));
   }
 
   async #configFileExists(): Promise<boolean> {

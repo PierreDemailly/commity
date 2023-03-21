@@ -2,14 +2,29 @@ import { join } from "node:path";
 import { open } from "node:fs/promises";
 
 import clargs, { Iclargs, SetupOptions } from "@clinjs/clargs";
-import tricolors from "tricolors";
+import kleur from "kleur";
 
 import { InitCommandHandler } from "./commands/init.js";
 import { Commity } from "./commity.js";
 
+export interface Chunks {
+  [key: string]: {
+    type?: "select" | "text",
+    message: string,
+    choices?: {
+      value: string;
+      description: string;
+    }[],
+    required?: boolean,
+    decorations?: {
+      prefix?: string;
+    }
+  };
+}
+
 export interface Conf extends SetupOptions {
-  render: string;
-  chunks: any[];
+	render: string;
+	chunks: Chunks;
 }
 
 const kConfigFilepath = `${process.cwd()}/commity.json`;
@@ -37,7 +52,7 @@ export class App {
     }
     catch (error) {
       if (error instanceof Error) {
-        tricolors.redLog(error.message);
+        console.log(kleur.red(error.message));
 
         return;
       }
@@ -52,8 +67,12 @@ export class App {
       await fh.close();
     }
     catch (error: any) {
-      if (error?.code === "ENOENT") {
-        tricolors.redLog("Commity is not initialized. Please run \"commity init\" to init your workspace.");
+      if ("code" in error && error?.code === "ENOENT") {
+        // eslint-disable-next-line max-len
+        process.stdout.write("\x07");
+        console.log(
+          `${kleur.red("Commity is not initialized")} Please run "npx commity init".`
+        );
         process.exit();
       }
 
@@ -70,7 +89,7 @@ export class App {
       return;
     }
     catch (error) {
-      tricolors.redLog("Current directory is not a Git repository.");
+      console.log(kleur.red("Current directory is not a Git repository."));
       process.exit();
     }
   }
@@ -88,6 +107,11 @@ export class App {
           name: "--addAll",
           alias: "-a",
           description: "add all staged changes before commiting"
+        },
+        {
+          name: "--no-verify",
+          alias: "-n",
+          description: "skip GIT hooks"
         }
       ],
       commands: [
