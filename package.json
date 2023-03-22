@@ -28,7 +28,8 @@
   "license": "ISC",
   "dependencies": {
     "@clinjs/clargs": "^1.0.2",
-    "@pierred/node-git": "^1.0.4",
+    "@pierred/node-git": "^1.1.0",
+    "@topcli/prompts": "^0.0.2",
     "ansi-styles": "^6.2.1",
     "kleur": "^4.1.5",
     "prompts": "^2.4.2"

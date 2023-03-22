@@ -1,14 +1,5 @@
-import prompts from "prompts";
-import ansi from "ansi-styles";
 import { Chunks } from "../../app.js";
-
-const kTick = `${ansi.green.open}✔${ansi.green.close}`;
-const kPointer = `${ansi.gray.open}›${ansi.gray.close}`;
-
-function clearLastLine() {
-  process.stdout.moveCursor(0, -1);
-  process.stdout.clearLine(0);
-}
+import { prompt, select } from "@topcli/prompts";
 
 export async function* promptCommitChunks(chunks: Chunks): AsyncGenerator<Record<string, string>, void, unknown> {
   for (const chunk in chunks) {
@@ -16,34 +7,19 @@ export async function* promptCommitChunks(chunks: Chunks): AsyncGenerator<Record
       continue;
     }
 
-    const fieldObject = chunks[chunk];
+    const { type, message, choices } = chunks[chunk];
 
-    const { value } = await prompts({
-      name: "value",
-      type: fieldObject.type ?? "text",
-      message: fieldObject.message,
-      choices: fieldObject.choices?.map((choice) => {
-        return { ...choice, title: choice.value };
-      }),
-      validate: () => {
-        if (fieldObject.type !== "select") {
-          clearLastLine();
-        }
-
-        return true;
-      },
-      format: (value) => {
-        if (fieldObject.type === "select") {
-          clearLastLine();
-          clearLastLine();
-
-          console.log(`${kTick} ${fieldObject.message} ${kPointer} ${value.name || value}`);
-        }
-
-        return value;
-      }
-    });
-
-    yield { [chunk]: value };
+    if (type === "select") {
+      yield {
+        [chunk]: await select(message, {
+          ignoreValues: [], choices: choices!.map((choice) => {
+            return { label: choice.value, ...choice };
+          })
+        })
+      };
+    }
+    else {
+      yield { [chunk]: await prompt(message) };
+    }
   }
 }
