@@ -22,7 +22,9 @@
     "build": "tsc",
     "test": "vitest -w false --coverage",
     "lint": "eslint ./src/**/**.ts",
-    "lint:fix": "eslint ./src/**/**.ts --fix"
+    "lint:fix": "eslint ./src/**/**.ts --fix",
+    "test:sharp": "node --test sharp.js",
+    "test:sharp:nospace": "node --test sharp2.js"
   },
   "author": "PierreDemailly",
   "license": "ISC",
