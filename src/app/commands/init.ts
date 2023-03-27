@@ -1,9 +1,10 @@
 import { open } from "node:fs/promises";
 
 import { Iclargs } from "@clinjs/clargs";
-import prompts from "prompts";
 import kleur from "kleur";
 import { Conf } from "../app.js";
+
+import { confirm } from "@topcli/prompts";
 
 const kConfigFilepath = `${process.cwd()}/commity.json`;
 const kDefaultConfigPath = new URL("../../commity.json", import.meta.url);
@@ -59,14 +60,11 @@ export class InitCommandHandler {
 
   async #resetConfigFile() {
     if (!this.#clargs.hasOption("overwrite", "o")) {
-      const { confirm } = await prompts({
-        name: "confirm",
-        type: "confirm",
-        message: "A config file already exists in the cwd, reset?",
+      const overwrite = await confirm("A config file already exists in the cwd, reset?", {
         initial: false
       });
 
-      if (!confirm) {
+      if (!overwrite) {
         return;
       }
     }

@@ -1,5 +1,5 @@
 import { Iclargs } from "@clinjs/clargs";
-import { indexAll, commit, changesCount, push } from "@pierred/node-git";
+import { indexAll, commit, changesCount, push, stagedCount } from "@pierred/node-git";
 import kleur from "kleur";
 import ansi from "ansi-styles";
 
@@ -58,7 +58,6 @@ export class Commity {
     this.#finalMsg += `${kleur.green(infoMsg)} ${kleur.blue().bold(commitMsg)}`;
 
     console.log(this.#finalMsg);
-    process.exit();
   }
 
   async #checkChangesCount(): Promise<void> {

@@ -32,7 +32,7 @@ const kConfigFilepath = `${process.cwd()}/commity.json`;
 export class App {
   #conf: Conf | undefined;
 
-  async initialize(): Promise<void> {
+  async initialize(): Promise<any> {
     await this.#isGitInitialized();
     this.#setupParser();
 
@@ -56,6 +56,8 @@ export class App {
 
         return;
       }
+
+      throw error;
     }
   }
 
@@ -68,8 +70,6 @@ export class App {
     }
     catch (error: any) {
       if ("code" in error && error?.code === "ENOENT") {
-        // eslint-disable-next-line max-len
-        process.stdout.write("\x07");
         console.log(
           `${kleur.red("Commity is not initialized")} Please run "npx commity init".`
         );
