@@ -3,6 +3,10 @@ import { prompt, select } from "@topcli/prompts";
 
 export async function* promptCommitChunks(chunks: Chunks): AsyncGenerator<Record<string, string>, void, unknown> {
   for (const chunk in chunks) {
+    if (chunk === "branchName") {
+      throw new Error("branchName cannot be used as chunk");
+    }
+
     if (!Object.prototype.hasOwnProperty.call(chunks, chunk)) {
       continue;
     }

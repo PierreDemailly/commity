@@ -150,6 +150,12 @@ If the chunk is required, it's same as decorating in `render` directly.
 ### render
 Formatted commit, replacing `{{chunk's key}}` with the user input.
 
+### Variables
+
+Theses variables can be used in `render` option and cannot be used as `chunk`.
+
+- `branchName`current git branch name
+
 **More features incoming :tada:**
 
 ## Contributors ✨
@@ -163,7 +169,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tbody>
     <tr>
       <td align="center" valign="top" width="50%"><a href="https://github.com/PierreDemailly"><img src="https://avatars.githubusercontent.com/u/39910767?v=4?s=100" width="100px;" alt="PierreDemailly"/><br /><sub><b>PierreDemailly</b></sub></a><br /><a href="https://github.com/PierreDemailly/commity/commits?author=PierreDemailly" title="Code">💻</a> <a href="https://github.com/PierreDemailly/commity/commits?author=PierreDemailly" title="Documentation">📖</a> <a href="https://github.com/PierreDemailly/commity/commits?author=PierreDemailly" title="Tests">⚠️</a></td>
-      <td align="center" valign="top" width="50%"><a href="https://github.com/SofianD"><img src="https://avatars.githubusercontent.com/u/39944043?v=4?s=100" width="100px;" alt="Yefis"/><br /><sub><b>Yefis</b></sub></a><br /><a href="https://github.com/PierreDemailly/commity/commits?author=SofianD" title="Code">💻</a></td>
+      <td align="center" valign="top" width="50%"><a href="https://github.com/SofianD"><img src="https://avatars.githubusercontent.com/u/39944043?v=4?s=100" width="100px;" alt="Yefis"/><br /><sub><b>Yefis</b></sub></a><br /><a href="https://github.com/PierreDemailly/commity/commits?author=SofianD" title="Code">💻</a> <a href="https://github.com/PierreDemailly/commity/pulls?q=is%3Apr+reviewed-by%3ASofianD" title="Reviewed Pull Requests">👀</a></td>
     </tr>
   </tbody>
 </table>

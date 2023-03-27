@@ -1,5 +1,5 @@
 import { Iclargs } from "@clinjs/clargs";
-import { indexAll, commit, changesCount, push, stagedCount } from "@pierred/node-git";
+import { indexAll, commit, changesCount, push, stagedCount, currentBranch } from "@pierred/node-git";
 import kleur from "kleur";
 import ansi from "ansi-styles";
 
@@ -30,10 +30,14 @@ export class Commity {
     }
 
     const { chunks, render } = this.#conf;
+    const branchName = (await currentBranch()).replace("\n", "");
     const values: Record<string, string> = {};
+
     for await (const value of promptCommitChunks(chunks)) {
       Object.assign(values, value);
     }
+    Object.assign(values, { branchName });
+    Object.assign(chunks, { branchName });
 
     const hasOwn = Object.prototype.hasOwnProperty;
     const commitMsg = render.replace(
