@@ -32,7 +32,7 @@ const kConfigFilepath = `${process.cwd()}/commity.json`;
 export class App {
   #conf: Conf | undefined;
 
-  async initialize(): Promise<any> {
+  async initialize(): Promise<void> {
     await this.#isGitInitialized();
     this.#setupParser();
 
