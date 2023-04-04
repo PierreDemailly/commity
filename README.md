@@ -1,7 +1,7 @@
 # Commity
 
-[![npm version](https://img.shields.io/npm/v/@pierred/commity.svg?style=flat)](https://npmjs.com/package/@pierred/commity)
-[![last commit](https://img.shields.io/github/last-commit/pierredemailly/commity.svg?style=flat)](https://github.com/PierreDemailly/commity/commits/main)
+[![npm version](https://img.shields.io/npm/v/@pierred/commity.svg?style=for-the-badge)](https://npmjs.com/package/@pierred/commity)
+[![last commit](https://img.shields.io/github/last-commit/pierredemailly/commity.svg?style=for-the-badge)](https://github.com/PierreDemailly/commity/commits/main)
 
 **Commity** is a command line tool that will help you with commits conventions.
 You can configure Commity fast & easily so every collaborators can follow the commit convention you need.
