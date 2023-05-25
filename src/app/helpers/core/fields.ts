@@ -1,5 +1,8 @@
-import { Chunks } from "../../app.js";
+// Import Third-party Dependencies
 import { prompt, select } from "@topcli/prompts";
+
+// Import Internal Dependencies
+import { Chunks } from "../../app.js";
 
 export async function* promptCommitChunks(chunks: Chunks): AsyncGenerator<Record<string, string>, void, unknown> {
   for (const chunk in chunks) {

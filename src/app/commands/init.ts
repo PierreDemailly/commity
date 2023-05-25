@@ -1,11 +1,15 @@
+// Import Node.js Dependencies
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 
+// Import Third-party Dependencies
 import { Iclargs } from "@clinjs/clargs";
+import { confirm } from "@topcli/prompts";
 import kleur from "kleur";
+
+// Import Internal Dependencies
 import { Conf } from "../app.js";
 
-import { confirm } from "@topcli/prompts";
-
+// CONSTANTS
 const kConfigFilepath = `${process.cwd()}/commity.json`;
 const kDefaultConfigPath = new URL("../../commity.json", import.meta.url);
 
