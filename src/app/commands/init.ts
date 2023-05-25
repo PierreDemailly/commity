@@ -1,4 +1,4 @@
-import { open } from "node:fs/promises";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 
 import { Iclargs } from "@clinjs/clargs";
 import kleur from "kleur";
@@ -19,37 +19,27 @@ export class InitCommandHandler {
   }
 
   async run(): Promise<void> {
-    const configFileExists = await this.#configFileExists();
+    const configFileExists = existsSync(kConfigFilepath);
     if (configFileExists) {
       await this.#resetConfigFile();
 
       return;
     }
 
-    await this.#generateConfigFile();
+    this.#generateConfigFile();
   }
 
-  async #getDefaultConfig() {
-    try {
-      const fh = await open(kDefaultConfigPath, "r");
-      const content = await fh.readFile("utf-8");
-      this.#defaultConfig = JSON.parse(content);
-      await fh.close();
-    }
-    catch (error: any) {
-      if (error?.code === "EPERM") {
-        throw error;
-      }
-    }
+  #getDefaultConfig() {
+    const content = readFileSync(kDefaultConfigPath, "utf-8");
+
+    this.#defaultConfig = JSON.parse(content);
   }
 
-  async #generateConfigFile() {
+  #generateConfigFile() {
     try {
-      const fh = await open(kConfigFilepath, "wx");
-      await fh.write(JSON.stringify(this.#defaultConfig, null, 2));
-      await fh.close();
+      writeFileSync(kConfigFilepath, JSON.stringify(this.#defaultConfig, null, 2), { });
     }
-    catch (e) {
+    catch {
       console.log(kleur.red(`Could not create ${process.cwd()}/commity.json`));
 
       return;
@@ -70,32 +60,14 @@ export class InitCommandHandler {
     }
 
     try {
-      const fh = await open(kConfigFilepath, "r+");
-      await fh.write(JSON.stringify(this.#defaultConfig, null, 2));
-      await fh.close();
+      writeFileSync(kConfigFilepath, JSON.stringify(this.#defaultConfig, null, 2), { });
     }
-    catch (e) {
+    catch {
       console.log(kleur.red(`Could not update ${process.cwd()}/commity.json`));
 
       return;
     }
 
     console.log(kleur.red(`Updated ${process.cwd()}/commity.json`));
-  }
-
-  async #configFileExists(): Promise<boolean> {
-    try {
-      const fh = await open(kConfigFilepath, "r");
-      await fh.close();
-    }
-    catch (error: any) {
-      if (error?.code === "ENOENT") {
-        return false;
-      }
-
-      throw error;
-    }
-
-    return true;
   }
 }

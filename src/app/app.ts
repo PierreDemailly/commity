@@ -1,5 +1,5 @@
 import { join } from "node:path";
-import { open } from "node:fs/promises";
+import { readFileSync, existsSync } from "node:fs";
 
 import clargs, { Iclargs, SetupOptions } from "@clinjs/clargs";
 import kleur from "kleur";
@@ -23,8 +23,8 @@ export interface Chunks {
 }
 
 export interface Conf extends SetupOptions {
-	render: string;
-	chunks: Chunks;
+  render: string;
+  chunks: Chunks;
 }
 
 const kConfigFilepath = `${process.cwd()}/commity.json`;
@@ -33,7 +33,7 @@ export class App {
   #conf: Conf | undefined;
 
   async initialize(): Promise<void> {
-    await this.#isGitInitialized();
+    this.#isGitInitialized();
     this.#setupParser();
 
     if (clargs.commandUsed("init")) {
@@ -43,7 +43,7 @@ export class App {
       return;
     }
 
-    await this.#getUserConfig();
+    this.#getUserConfig();
 
     const commity = new Commity(clargs as Iclargs, this.#conf as Conf);
 
@@ -61,12 +61,10 @@ export class App {
     }
   }
 
-  async #getUserConfig(): Promise<void> {
+  #getUserConfig(): void {
     try {
-      const fh = await open(kConfigFilepath);
-      const content = await fh.readFile("utf-8");
+      const content = readFileSync(kConfigFilepath, "utf-8");
       this.#conf = JSON.parse(content);
-      await fh.close();
     }
     catch (error: any) {
       if ("code" in error && error?.code === "ENOENT") {
@@ -80,15 +78,10 @@ export class App {
     }
   }
 
-  async #isGitInitialized(): Promise<void> {
-    try {
-      const path = join(process.cwd(), "/.git");
-      const fh = await open(path);
-      await fh.close();
+  #isGitInitialized(): void {
+    const isGitInitialized = existsSync(join(process.cwd(), "/.git"));
 
-      return;
-    }
-    catch (error) {
+    if (!isGitInitialized) {
       console.log(kleur.red("Current directory is not a Git repository."));
       process.exit();
     }
