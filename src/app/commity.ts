@@ -1,11 +1,14 @@
+// Import Third-party Dependencies
 import { Iclargs } from "@clinjs/clargs";
 import { indexAll, commit, changesCount, push, stagedCount, currentBranch } from "@pierred/node-git";
 import kleur from "kleur";
 import ansi from "ansi-styles";
 
+// Import Internal Dependencies
 import { Conf } from "./app.js";
 import { promptCommitChunks } from "./helpers/core/fields.js";
 
+// CONSTANTS
 const kTick = `${ansi.green.open}✔${ansi.green.close}`;
 
 export class Commity {

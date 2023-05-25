@@ -1,9 +1,12 @@
+// Import Node.js Dependencies
 import { join } from "node:path";
 import { readFileSync, existsSync } from "node:fs";
 
+// Import Third-party Dependencies
 import clargs, { Iclargs, SetupOptions } from "@clinjs/clargs";
 import kleur from "kleur";
 
+// Import Internal Dependencies
 import { InitCommandHandler } from "./commands/init.js";
 import { Commity } from "./commity.js";
 
@@ -27,6 +30,7 @@ export interface Conf extends SetupOptions {
   chunks: Chunks;
 }
 
+// CONSTANTS
 const kConfigFilepath = `${process.cwd()}/commity.json`;
 
 export class App {

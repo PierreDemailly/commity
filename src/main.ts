@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+// Import Internal Dependencies
 import { App } from "./app/app.js";
 
 async function main() {

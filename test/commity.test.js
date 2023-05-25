@@ -1,6 +1,8 @@
+// Import Node.js Dependencies
 import { test } from "node:test";
 import assert from "node:assert";
 
+// Import Third-party Dependencies
 import esmock from "esmock";
 
 const logs = [];

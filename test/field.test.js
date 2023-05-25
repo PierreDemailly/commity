@@ -1,7 +1,8 @@
+// Import Node.js Dependencies
+import assert from "node:assert";
 import { test } from "node:test";
 
-import assert from "node:assert";
-
+// Import Third-party Dependencies
 import esmock from "esmock";
 
 async function arrayFromAsyncGenerator(gen) {
