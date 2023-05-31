@@ -16,8 +16,7 @@
   "exclude": [
     "src/test/*",
     "dist/**/*",
-    "coverage/**/*",
-    "vite.config.ts"
+    "coverage/**/*"
   ],
   "include": [
     "src/**/*.ts",
