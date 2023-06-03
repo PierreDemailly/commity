@@ -6,6 +6,7 @@ import { Iclargs } from "@clinjs/clargs";
 import { indexAll, commit, changesCount, push, stagedCount, currentBranch } from "@pierred/node-git";
 import kleur from "kleur";
 import ansi from "ansi-styles";
+import pupa from "pupa";
 
 // Import Internal Dependencies
 import { Conf } from "./app.js";
@@ -45,23 +46,16 @@ export class Commity {
     Object.assign(values, { branchName });
     Object.assign(chunks, { branchName });
 
-    const hasOwn = Object.prototype.hasOwnProperty;
-    let commitMsg = render.replace(
-      /{{\s*([^}]+)\s*}}/g,
-      (whole: string, key: string) => (hasOwn.call(values, key)
-        ? (() => {
-          const chunk = chunks[key];
-          const chunkValue = values[key];
-          if (!chunkValue && chunk.required === false) {
-            return "";
-          }
+    let commitMsg = pupa(render, values, {
+      transform: ({ value, key }): string => {
+        const chunk = chunks[key];
 
-          const prefix = chunk.decorations?.prefix ?? "";
+        const prefix = chunk.decorations?.prefix ?? "";
 
-          return prefix + chunkValue;
-        })()
-        : whole)
-    );
+        return prefix + value;
+      },
+      ignoreMissing: true
+    });
 
     for (const body of bodyRender) {
       if (body.if && !values[body.if]) {
@@ -69,10 +63,7 @@ export class Commity {
       }
 
       commitMsg += EOL + EOL;
-      commitMsg += body.value.replace(
-        /{{\s*([^}]+)\s*}}/g,
-        (whole: string, key: string) => (hasOwn.call(values, key) ? values[key] : whole)
-      );
+      commitMsg += pupa(body.value, values, { ignoreMissing: true });
     }
 
     await this.#commit(commitMsg);
@@ -105,7 +96,9 @@ export class Commity {
   }
 
   async #commit(msg: string): Promise<void> {
-    await commit(msg, { skipHooks: this.#clargs.hasOption("no-verify", "n") });
+    await commit(msg, {
+      skipHooks: this.#clargs.hasOption("no-verify", "n")
+    });
   }
 
   async #handlePushOption(): Promise<void> {
