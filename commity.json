@@ -36,13 +36,14 @@
         "prefix": ": "
       }
     },
-    "ticket": {
+    "issue": {
       "message": "What is the issue id",
-      "decorations": {
-        "prefix": " #"
-      },
       "required": false
     }
   },
-  "render": "{{scope}}{{ticket}}{{message}}"
+  "render": "{{scope}}{{message}}",
+  "bodyRender": [{
+    "if": "issue",
+    "value": "Fixes #{{issue}}"
+  }]
 }

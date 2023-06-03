@@ -1,27 +1,24 @@
 // Import Node.js Dependencies
 import { test } from "node:test";
 import assert from "node:assert";
+import { EOL } from "node:os";
 
 // Import Third-party Dependencies
 import esmock from "esmock";
 
 const logs = [];
 
-global.console = { log: (value) => {
-  if (value.includes("#")) {
-    // A very weird bug workaround: node --test replaces " #" by " \#" and everything crash
-    logs.push(value.replace("#", "$"));
-
-    return;
+global.console = {
+  log: (...value) => {
+    logs.push(value[0].split(EOL));
   }
-  logs.push(value);
-}
 };
 
 test("should generate prompt responses for each chunk", async() => {
+  const inputs = ["foo", "1"];
   const { App } = await esmock("../dist/app/app.js", {}, {
     "@topcli/prompts": {
-      prompt: async() => "foo",
+      prompt: async() => inputs.shift(),
       select: async() => "bar",
       confirm: async() => true
     },
@@ -51,5 +48,6 @@ test("should generate prompt responses for each chunk", async() => {
   });
   const app = new App();
   await app.initialize();
-  assert.deepEqual(logs, ["✔ Commited 2 files. bar $foo: foo"]);
+
+  assert.deepEqual(logs.flat(), ["✔ Commited 2 files. bar: foo", "", "Fixes #1"]);
 });

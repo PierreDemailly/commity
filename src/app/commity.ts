@@ -1,3 +1,6 @@
+// Import Node.js Dependencies
+import { EOL } from "node:os";
+
 // Import Third-party Dependencies
 import { Iclargs } from "@clinjs/clargs";
 import { indexAll, commit, changesCount, push, stagedCount, currentBranch } from "@pierred/node-git";
@@ -32,7 +35,7 @@ export class Commity {
       throw new Error("Are you sure there are staged changes to commit ?");
     }
 
-    const { chunks, render } = this.#conf;
+    const { chunks, render, bodyRender = [] } = this.#conf;
     const branchName = (await currentBranch()).replace("\n", "");
     const values: Record<string, string> = {};
 
@@ -43,7 +46,7 @@ export class Commity {
     Object.assign(chunks, { branchName });
 
     const hasOwn = Object.prototype.hasOwnProperty;
-    const commitMsg = render.replace(
+    let commitMsg = render.replace(
       /{{\s*([^}]+)\s*}}/g,
       (whole: string, key: string) => (hasOwn.call(values, key)
         ? (() => {
@@ -59,6 +62,19 @@ export class Commity {
         })()
         : whole)
     );
+
+    for (const body of bodyRender) {
+      if (body.if && !values[body.if]) {
+        continue;
+      }
+
+      commitMsg += EOL + EOL;
+      commitMsg += body.value.replace(
+        /{{\s*([^}]+)\s*}}/g,
+        (whole: string, key: string) => (hasOwn.call(values, key) ? values[key] : whole)
+      );
+    }
+
     await this.#commit(commitMsg);
     await this.#handlePushOption();
 
@@ -79,7 +95,7 @@ export class Commity {
   async #handleAddAllOption(): Promise<void> {
     if (
       this.#clargs.hasOption("addAll", "a") &&
-			this.#changesCount - this.#stagedCount > 0
+      this.#changesCount - this.#stagedCount > 0
     ) {
       await indexAll({ omitNewFiles: false });
       const addedCount = this.#changesCount - this.#stagedCount;
