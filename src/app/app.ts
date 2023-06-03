@@ -26,8 +26,12 @@ export interface Chunks {
 }
 
 export interface Conf extends SetupOptions {
-  render: string;
   chunks: Chunks;
+  bodyRender: {
+    if?: string;
+    value: string;
+  }[];
+  render: string;
 }
 
 // CONSTANTS

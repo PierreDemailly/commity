@@ -1,8 +1,12 @@
+// Import Node.js Dependencies
+import { EOL } from "node:os";
+
 // Import Third-party Dependencies
 import { Iclargs } from "@clinjs/clargs";
 import { indexAll, commit, changesCount, push, stagedCount, currentBranch } from "@pierred/node-git";
 import kleur from "kleur";
 import ansi from "ansi-styles";
+import pupa from "pupa";
 
 // Import Internal Dependencies
 import { Conf } from "./app.js";
@@ -32,7 +36,7 @@ export class Commity {
       throw new Error("Are you sure there are staged changes to commit ?");
     }
 
-    const { chunks, render } = this.#conf;
+    const { chunks, render, bodyRender = [] } = this.#conf;
     const branchName = (await currentBranch()).replace("\n", "");
     const values: Record<string, string> = {};
 
@@ -42,23 +46,26 @@ export class Commity {
     Object.assign(values, { branchName });
     Object.assign(chunks, { branchName });
 
-    const hasOwn = Object.prototype.hasOwnProperty;
-    const commitMsg = render.replace(
-      /{{\s*([^}]+)\s*}}/g,
-      (whole: string, key: string) => (hasOwn.call(values, key)
-        ? (() => {
-          const chunk = chunks[key];
-          const chunkValue = values[key];
-          if (!chunkValue && chunk.required === false) {
-            return "";
-          }
+    let commitMsg = pupa(render, values, {
+      transform: ({ value, key }): string => {
+        const chunk = chunks[key];
 
-          const prefix = chunk.decorations?.prefix ?? "";
+        const prefix = chunk.decorations?.prefix ?? "";
 
-          return prefix + chunkValue;
-        })()
-        : whole)
-    );
+        return prefix + value;
+      },
+      ignoreMissing: true
+    });
+
+    for (const body of bodyRender) {
+      if (body.if && !values[body.if]) {
+        continue;
+      }
+
+      commitMsg += EOL + EOL;
+      commitMsg += pupa(body.value, values, { ignoreMissing: true });
+    }
+
     await this.#commit(commitMsg);
     await this.#handlePushOption();
 
@@ -79,7 +86,7 @@ export class Commity {
   async #handleAddAllOption(): Promise<void> {
     if (
       this.#clargs.hasOption("addAll", "a") &&
-			this.#changesCount - this.#stagedCount > 0
+      this.#changesCount - this.#stagedCount > 0
     ) {
       await indexAll({ omitNewFiles: false });
       const addedCount = this.#changesCount - this.#stagedCount;
@@ -89,7 +96,9 @@ export class Commity {
   }
 
   async #commit(msg: string): Promise<void> {
-    await commit(msg, { skipHooks: this.#clargs.hasOption("no-verify", "n") });
+    await commit(msg, {
+      skipHooks: this.#clargs.hasOption("no-verify", "n")
+    });
   }
 
   async #handlePushOption(): Promise<void> {
