@@ -18,7 +18,7 @@ test("should generate prompt responses for each chunk", async() => {
   const inputs = ["foo", "1"];
   const { App } = await esmock("../dist/app/app.js", {}, {
     "@topcli/prompts": {
-      prompt: async() => inputs.shift(),
+      question: async() => inputs.shift(),
       select: async() => "bar",
       confirm: async() => true
     },

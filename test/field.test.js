@@ -18,7 +18,7 @@ async function arrayFromAsyncGenerator(gen) {
 test("should generate prompt responses for each chunk", async() => {
   const { promptCommitChunks } = await esmock("../dist/app/helpers/core/fields.js", {
     "@topcli/prompts": {
-      prompt: async() => "foo",
+      question: async() => "foo",
       select: async() => "bar"
     }
   });
@@ -43,7 +43,7 @@ test("should generate prompt responses for each chunk", async() => {
 test("should skip inherited properties", async() => {
   const { promptCommitChunks } = await esmock("../dist/app/helpers/core/fields.js", {
     "@topcli/prompts": {
-      prompt: async() => "foo",
+      question: async() => "foo",
       select: async() => "bar"
     }
   });
