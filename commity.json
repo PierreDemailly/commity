@@ -6,27 +6,31 @@
       "choices": [
         {
           "value": "feat",
-          "description": "A new feature"
+          "description": "New feature implementation or enhancement"
         },
         {
           "value": "fix",
-          "description": "A bug fix"
+          "description": "Bug fix or error resolution"
         },
         {
-          "value": "docs",
-          "description": "Documentation only changes"
+          "value": "test",
+          "description": "Testing or test case creation"
+        },
+        {
+          "value": "style",
+          "description": "Code formatting or style improvement"
         },
         {
           "value": "refactor",
-          "description": "Changes that neither fixes a bug or adds a feature"
+          "description": "Code restructuring or optimization"
         },
         {
-          "value": "spec",
-          "description": "Changes that affect unit tests"
+          "value": "docs",
+          "description": "Documentation updates or additions"
         },
         {
-          "value": "pkg",
-          "description": "Changes that affect package (deps, config, readme...)"
+          "value": "chore",
+          "description": "Routine or miscellaneous tasks or changes"
         }
       ]
     },
