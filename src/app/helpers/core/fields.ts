@@ -1,5 +1,5 @@
 // Import Third-party Dependencies
-import { prompt, select } from "@topcli/prompts";
+import { question, select } from "@topcli/prompts";
 
 // Import Internal Dependencies
 import { Chunks } from "../../app.js";
@@ -26,7 +26,7 @@ export async function* promptCommitChunks(chunks: Chunks): AsyncGenerator<Record
       };
     }
     else {
-      yield { [chunk]: await prompt(message) };
+      yield { [chunk]: await question(message) };
     }
   }
 }
